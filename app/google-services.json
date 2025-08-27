@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "270795638567",
+    "project_id": "essence-togo2",
+    "storage_bucket": "essence-togo2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:270795638567:android:2061c996563502c99f0b02",
+        "android_client_info": {
+          "package_name": "com.example.essence_togo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrDg4gn_1B9ytkbWEWLC6avfCYBTrVxrk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

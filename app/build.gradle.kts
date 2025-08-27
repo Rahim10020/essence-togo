@@ -83,6 +83,7 @@ dependencies {
 
     // Material Icons Extended (pour plus d'icônes)
     implementation("androidx.compose.material:material-icons-extended:1.7.8")
+    implementation(libs.firebase.database)
 
     // ============= TESTS ACTUELS =============
     testImplementation(libs.junit)
