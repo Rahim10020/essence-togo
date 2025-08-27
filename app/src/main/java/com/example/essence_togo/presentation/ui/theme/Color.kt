@@ -1,4 +1,4 @@
-package com.example.essence_togo.ui.theme
+package com.example.essence_togo.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
