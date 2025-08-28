@@ -23,7 +23,7 @@ class LocationManager(private val context: Context) {
     }
 
     // verifions si les permissions de localisation sont accordees
-    private fun hasLocationPermission(): Boolean {
+    fun hasLocationPermission(): Boolean {
         return ContextCompat.
         checkSelfPermission(
             context,

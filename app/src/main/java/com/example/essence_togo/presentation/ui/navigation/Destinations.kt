@@ -13,21 +13,21 @@ sealed class BottomNavDestination(
     val icon: ImageVector
 ) {
     data object Home: BottomNavDestination(
-        route = "home",
-        title = "Acceuil",
-        icon = Icons.Default.Home
+        route   = "home",
+        title   = "Acceuil",
+        icon    = Icons.Default.Home
     )
 
     data object Filter: BottomNavDestination(
-        route = "filter",
-        title = "Filtrer",
-        icon = Icons.Default.FilterList
+        route   = "filter",
+        title   = "Filtrer",
+        icon    = Icons.Default.FilterList
     )
 
     data object History: BottomNavDestination(
-        route = "history",
-        title = "Historique",
-        icon = Icons.Default.History
+        route   = "history",
+        title   = "Historique",
+        icon    = Icons.Default.History
     )
 }
 
