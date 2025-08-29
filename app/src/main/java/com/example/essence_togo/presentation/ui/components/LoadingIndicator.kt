@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -44,7 +46,9 @@ fun EmptyState(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier            = Modifier.fillMaxWidth().padding(32.dp),
+        modifier            = Modifier
+            .fillMaxWidth()
+            .padding(32.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -65,10 +69,36 @@ fun EmptyState(
 
 @Composable
 fun ErrorState(
-    title: String = "Erreur de connexion",
-    subtitle: String = "Verifiez votre connexion internet et reessayer",
-    onRetry: (() -> Unit)? = null,
-    modifier: Modifier = Modifier
+    title: String           = "Erreur de connexion",
+    subtitle: String        = "Verifiez votre connexion internet et reessayer",
+    onRetry: (() -> Unit)?  = null,
 ) {
+    Column(
+        modifier            = Modifier.fillMaxWidth().padding(32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text        = title,
+            style       = MaterialTheme.typography.headlineMedium,
+            color       = MaterialTheme.colorScheme.error,
+            textAlign   = TextAlign.Center
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text        = subtitle,
+            style       = MaterialTheme.typography.bodyMedium,
+            color       = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign   = TextAlign.Center
+        )
 
+        if (onRetry != null) {
+            Spacer(modifier = Modifier.height(16.dp))
+            Button(
+                onClick = onRetry,
+                colors  = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+            ) {
+                Text(text = "Reesayer")
+            }
+        }
+    }
 }
