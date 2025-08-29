@@ -14,12 +14,6 @@ import com.example.essence_togo.presentation.ui.screens.home.HomeViewModel
 import com.example.essence_togo.utils.LocationManager
 
 @Composable
-@Preview
-fun NavGraphPreview(){
-    NavGraph()
-}
-
-@Composable
 fun NavGraph(
     navController: NavHostController,
     startDestination: String = BottomNavDestination.Home.route,
