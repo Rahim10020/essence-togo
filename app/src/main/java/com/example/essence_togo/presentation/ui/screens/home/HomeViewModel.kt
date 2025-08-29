@@ -101,4 +101,18 @@ class HomeViewModel(
             locationManager.getDefaultLocation()
         }
     }
+
+    fun onStationClick(station: Station){
+        // ajouter la station aux stations visitees
+        preferencesManager.addVisitedStation(station)
+        Log.d(TAG, "Station ajoutee a l'historique ${station.nom}")
+    }
+
+    fun retry() {
+        _uiState.value = _uiState.value.copy(
+            isLoading = true,
+            error = null
+        )
+        loadData()
+    }
 }
