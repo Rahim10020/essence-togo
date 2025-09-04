@@ -22,7 +22,6 @@ data class HomeUiState(
     val userLocation: Location?     = null,
 )
 
-
 class HomeViewModel(
     private val stationRepository: StationRepository,
     private val locationManager: LocationManager,
@@ -78,7 +77,7 @@ class HomeViewModel(
                         Log.d(TAG, "Stations chargees et triees ${processedStations.size}")
                     }
             } catch (exception: Exception) {
-                Log.e(TAG, "Ereur generale dans loadDate", exception)
+                Log.e(TAG, "Erreur generale dans loadDate", exception)
                 _uiState.value  = _uiState.value.copy(
                     isLoading   = false,
                     error       = "Erreur de connexion"
@@ -97,7 +96,7 @@ class HomeViewModel(
                 locationManager.getDefaultLocation()
             }
         } catch(exception: Exception) {
-            Log.e(TAG, "Errur lors de la recuperation de la localisation", exception)
+            Log.e(TAG, "Erreur lors de la recuperation de la localisation", exception)
             locationManager.getDefaultLocation()
         }
     }
