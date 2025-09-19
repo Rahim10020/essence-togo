@@ -76,8 +76,8 @@ class FilterViewModel(
             } catch (exception: Exception) {
                 Log.e(TAG, "Erreur generale dans loadData", exception)
                 _uiState.value = _uiState.value.copy(
-                    isLoading = false,
-                    error = "Erreur de connexion"
+                    isLoading   = false,
+                    error       = "Erreur de connexion"
                 )
             }
         }
@@ -95,5 +95,40 @@ class FilterViewModel(
             Log.e(TAG, "Erreur lors de la recuperation de la localisation", exception)
             locationManager.getDefaultLocation()
         }
+    }
+
+    private fun onSearchQueryChange(query: String) {
+        _uiState.value = _uiState.value.copy(searchQuery = query)
+    }
+
+    private fun filterStations(query: String) {
+        val currentState    = _uiState.value
+        val filtredStations = if (query.isBlank()) {
+            currentState.allStations
+        } else {
+            stationRepository.filterStations(currentState.allStations, query)
+        }
+        _uiState.value = _uiState.value.copy(
+            filtredStations = filtredStations
+        )
+        Log.d(TAG, "Filtrage: '$query' -> ${filtredStations.size} stations")
+    }
+
+    fun onStationClick(station: Station) {
+        // ajouter la station aux stations visitees
+        preferencesManager.addVisitedStation(station)
+        Log.d(TAG, "Station ajoutee a l'historique: ${station.nom}")
+    }
+
+    fun retry() {
+        _uiState.value = _uiState.value.copy(
+            isLoading = true,
+            error = null
+        )
+        loadData()
+    }
+
+    fun clearSearch() {
+        onSearchQueryChange("")
     }
 }
