@@ -69,12 +69,13 @@ fun EmptyState(
 
 @Composable
 fun ErrorState(
+    modifier: Modifier      = Modifier,
     title: String           = "Erreur de connexion",
     subtitle: String        = "Verifiez votre connexion internet et reessayer",
     onRetry: (() -> Unit)?  = null,
 ) {
     Column(
-        modifier            = Modifier.fillMaxWidth().padding(32.dp),
+        modifier            = modifier.fillMaxWidth().padding(32.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
