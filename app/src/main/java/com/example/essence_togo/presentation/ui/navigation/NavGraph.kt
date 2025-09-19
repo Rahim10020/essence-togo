@@ -29,12 +29,20 @@ fun NavGraph(
         composable(BottomNavDestination.Home.route) {
             val viewModel: HomeViewModel = viewModel {
                 HomeViewModel(
-                    stationRepository = stationRepository,
-                    locationManager = locationManager,
-                    preferencesManager = preferencesManager
+                    stationRepository   = stationRepository,
+                    locationManager     = locationManager,
+                    preferencesManager  = preferencesManager
                 )
             }
-            HomeScreen()
+            HomeScreen(
+                viewModel = viewModel,
+                onStationClick = { stationId ->
+                    navController.navigate(Destination.StationDetails.createRoute(stationId))
+                }
+            )
         }
+
+        // ecran de filtrage/recherche
+
     }
 }
