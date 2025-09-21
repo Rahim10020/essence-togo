@@ -43,16 +43,16 @@ class FilterViewModel(
         viewModelScope.launch {
             try {
                 // recuperer la localisation de l'utilisateur
-                val location = getUserLocation()
-                _uiState.value = _uiState.value.copy(userLocation = location)
+                val location    = getUserLocation()
+                _uiState.value  = _uiState.value.copy(userLocation = location)
 
                 // Observer les stations depuis firebase
                 stationRepository.getAllStations()
                     .catch {exception ->
                         Log.e(TAG, "Erreur lors du chargement des stations", exception)
-                        _uiState.value = _uiState.value.copy(
-                            isLoading = false,
-                            error = "Erreur lors du chargement des stations"
+                        _uiState.value  = _uiState.value.copy(
+                            isLoading   = false,
+                            error       = "Erreur lors du chargement des stations"
                         )
                     }
                     .collect { stations ->
@@ -75,7 +75,7 @@ class FilterViewModel(
                     }
             } catch (exception: Exception) {
                 Log.e(TAG, "Erreur generale dans loadData", exception)
-                _uiState.value = _uiState.value.copy(
+                _uiState.value  = _uiState.value.copy(
                     isLoading   = false,
                     error       = "Erreur de connexion"
                 )
@@ -97,7 +97,7 @@ class FilterViewModel(
         }
     }
 
-    private fun onSearchQueryChange(query: String) {
+    fun onSearchQueryChange(query: String) {
         _uiState.value = _uiState.value.copy(searchQuery = query)
     }
 
