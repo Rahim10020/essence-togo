@@ -9,6 +9,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.essence_togo.data.local.PreferencesManager
 import com.example.essence_togo.data.repository.StationRepository
+import com.example.essence_togo.presentation.ui.screens.filter.FilterScreen
+import com.example.essence_togo.presentation.ui.screens.filter.FilterViewModel
 import com.example.essence_togo.presentation.ui.screens.home.HomeScreen
 import com.example.essence_togo.presentation.ui.screens.home.HomeViewModel
 import com.example.essence_togo.utils.LocationManager
@@ -35,14 +37,28 @@ fun NavGraph(
                 )
             }
             HomeScreen(
-                viewModel = viewModel,
-                onStationClick = { stationId ->
+                viewModel       = viewModel,
+                onStationClick  = { stationId ->
                     navController.navigate(Destination.StationDetails.createRoute(stationId))
                 }
             )
         }
 
         // ecran de filtrage/recherche
-
+        composable(BottomNavDestination.Filter.route){
+            val viewModel: FilterViewModel = viewModel {
+                FilterViewModel(
+                    stationRepository   = stationRepository,
+                    locationManager     = locationManager,
+                    preferencesManager  = preferencesManager
+                )
+            }
+            FilterScreen(
+                viewModel       = viewModel,
+                onStationClick  = { stationId ->
+                    navController.navigate(Destination.StationDetails.createRoute(stationId))
+                }
+            )
+        }
     }
 }

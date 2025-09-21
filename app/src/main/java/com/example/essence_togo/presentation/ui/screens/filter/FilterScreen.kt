@@ -107,26 +107,26 @@ fun FilterScreen(
 
                 uiState.filtredStations.isEmpty() && uiState.searchQuery.isNotBlank() -> {
                     SearchEmptyState(
-                        query = uiState.searchQuery,
-                        onClearSearch = { viewModel.clearSearch() },
-                        modifier = Modifier.align(Alignment.Center)
+                        query           = uiState.searchQuery,
+                        onClearSearch   = { viewModel.clearSearch() },
+                        modifier        = Modifier.align(Alignment.Center)
                     )
                 }
 
                 uiState.filtredStations.isEmpty() -> {
                     EmptyState(
-                        title = "Aucune station disponible",
-                        subtitle = "Verifiez votre connexion internet",
-                        modifier = Modifier.align(Alignment.Center)
+                        title       = "Aucune station disponible",
+                        subtitle    = "Verifiez votre connexion internet",
+                        modifier    = Modifier.align(Alignment.Center)
                     )
                 }
 
                 else -> {
                     FiltredStationsList(
-                        stations = uiState.filtredStations,
-                        searchQuery = uiState.searchQuery,
-                        totalStations = uiState.allStations.size,
-                        onStationClick = { station ->
+                        stations        = uiState.filtredStations,
+                        searchQuery     = uiState.searchQuery,
+                        totalStations   = uiState.allStations.size,
+                        onStationClick  = { station ->
                             viewModel.onStationClick(station)
                             onStationClick(station.id)
                         }
