@@ -35,7 +35,7 @@ class HistoryViewModel(
                 .collect{ stations ->
                     _uiState.value  = _uiState.value.copy(
                         visitedStations = stations,
-                        isLoading = false
+                        isLoading       = false
                     )
                     Log.d(TAG, "Stations visitees mise a jour :${stations.size}")
                 }
