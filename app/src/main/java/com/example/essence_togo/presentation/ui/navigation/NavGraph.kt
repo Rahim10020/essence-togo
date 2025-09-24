@@ -2,7 +2,6 @@ package com.example.essence_togo.presentation.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -11,6 +10,8 @@ import com.example.essence_togo.data.local.PreferencesManager
 import com.example.essence_togo.data.repository.StationRepository
 import com.example.essence_togo.presentation.ui.screens.filter.FilterScreen
 import com.example.essence_togo.presentation.ui.screens.filter.FilterViewModel
+import com.example.essence_togo.presentation.ui.screens.history.HistoryScreen
+import com.example.essence_togo.presentation.ui.screens.history.HistoryViewModel
 import com.example.essence_togo.presentation.ui.screens.home.HomeScreen
 import com.example.essence_togo.presentation.ui.screens.home.HomeViewModel
 import com.example.essence_togo.utils.LocationManager
@@ -56,6 +57,21 @@ fun NavGraph(
             FilterScreen(
                 viewModel       = viewModel,
                 onStationClick  = { stationId ->
+                    navController.navigate(Destination.StationDetails.createRoute(stationId))
+                }
+            )
+        }
+
+        // ecran pour l'historique
+        composable(BottomNavDestination.History.route) {
+            val viewModel: HistoryViewModel = viewModel {
+                HistoryViewModel(
+                    preferencesManager = preferencesManager
+                )
+            }
+            HistoryScreen(
+                viewModel = viewModel,
+                onStationClick = {stationId ->
                     navController.navigate(Destination.StationDetails.createRoute(stationId))
                 }
             )
