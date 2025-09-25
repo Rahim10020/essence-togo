@@ -1,3 +1,90 @@
 <resources>
     <string name="app_name">essence-togo</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Accueil</string>
+    <string name="nav_filter">Filtrer</string>
+    <string name="nav_history">Historique</string>
+
+    <!-- Home Screen -->
+    <string name="home_title">EssenceTogo</string>
+    <string name="home_subtitle">Stations les plus proches</string>
+    <string name="stations_found">%d station(s) trouvée(s)</string>
+    <string name="sorted_by_distance">Triées par distance</string>
+
+    <!-- Filter Screen -->
+    <string name="filter_title">Rechercher</string>
+    <string name="filter_subtitle">Trouvez votre station-service</string>
+    <string name="search_placeholder">Nom de station ou adresse…</string>
+    <string name="search_results_for">Résultats pour "%s"</string>
+    <string name="no_results_found">Aucun résultat trouvé</string>
+    <string name="no_results_subtitle">Aucune station trouvée pour "%s"</string>
+    <string name="show_all_stations">Voir toutes les stations</string>
+
+    <!-- History Screen -->
+    <string name="history_title">Historique</string>
+    <string name="history_subtitle">Récemment visitées</string>
+    <string name="visited_stations">%d station(s) visitée(s)</string>
+    <string name="most_recent_first">Plus récente en premier</string>
+    <string name="clear_history">Vider</string>
+    <string name="clear_history_title">Vider l\'historique</string>
+    <string name="clear_history_message">Êtes-vous sûr de vouloir supprimer toutes les stations visitées ? Cette action ne peut pas être annulée.</string>
+    <string name="confirm">Confirmer</string>
+    <string name="cancel">Annuler</string>
+
+    <!-- Station Details -->
+    <string name="station_details_title">Détails de la station</string>
+    <string name="station_address_label">Adresse</string>
+    <string name="station_distance_label">Distance</string>
+    <string name="station_coordinates">Coordonnées GPS</string>
+    <string name="station_latitude">Latitude: %.6f</string>
+    <string name="station_longitude">Longitude: %.6f</string>
+    <string name="go_to_location">Aller à cet endroit</string>
+    <string name="directions">Directions</string>
+
+    <!-- Loading States -->
+    <string name="loading_stations">Chargement des stations…</string>
+    <string name="loading_location">Récupération de votre position et des stations…</string>
+    <string name="loading_details">Chargement des détails…</string>
+    <string name="loading_history">Chargement de l\'historique…</string>
+
+    <!-- Error States -->
+    <string name="error_title">Oops !</string>
+    <string name="error_connection">Erreur de connexion</string>
+    <string name="error_loading_stations">Erreur lors du chargement des stations</string>
+    <string name="error_loading_details">Erreur lors du chargement des détails</string>
+    <string name="error_station_not_found">Station introuvable</string>
+    <string name="error_no_navigation_app">Aucune application de navigation disponible</string>
+    <string name="error_navigation_failed">Erreur lors de l\'ouverture de la navigation</string>
+    <string name="retry">Réessayer</string>
+
+    <!-- Empty States -->
+    <string name="no_stations_title">Aucune station trouvée</string>
+    <string name="no_stations_subtitle">Vérifiez votre connexion internet</string>
+    <string name="no_visited_stations_title">Aucune station visitée</string>
+    <string name="no_visited_stations_subtitle">Les stations que vous consultez apparaîtront ici</string>
+    <string name="no_stations_available_title">Aucune station disponible</string>
+    <string name="no_stations_available_subtitle">Vérifiez votre connexion internet</string>
+
+    <!-- Permissions -->
+    <string name="permission_required_title">Permission requise</string>
+    <string name="permission_location_message">La permission de localisation est nécessaire pour trouver les stations les plus proches. Voulez-vous activer la permission dans les paramètres ?</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+
+    <!-- Misc -->
+    <string name="km_unit">km</string>
+    <string name="distance_format">%.2f km</string>
+    <string name="back">Retour</string>
+    <string name="search">Rechercher</string>
+    <string name="clear">Effacer</string>
+
+    <!-- Accessibility -->
+    <string name="station_image_content_description">Image de %s</string>
+    <string name="search_icon_content_description">Rechercher</string>
+    <string name="clear_search_content_description">Effacer la recherche</string>
+    <string name="back_button_content_description">Retour</string>
+    <string name="location_icon_content_description">Localisation</string>
+    <string name="directions_icon_content_description">Directions</string>
+    <string name="delete_icon_content_description">Supprimer</string>
 </resources>
