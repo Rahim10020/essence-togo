@@ -4,10 +4,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.essence_togo.data.local.PreferencesManager
 import com.example.essence_togo.data.repository.StationRepository
+import com.example.essence_togo.presentation.ui.screens.details.StationDetailScreen
+import com.example.essence_togo.presentation.ui.screens.details.StationDetailsViewModel
 import com.example.essence_togo.presentation.ui.screens.filter.FilterScreen
 import com.example.essence_togo.presentation.ui.screens.filter.FilterViewModel
 import com.example.essence_togo.presentation.ui.screens.history.HistoryScreen
@@ -73,6 +77,27 @@ fun NavGraph(
                 viewModel = viewModel,
                 onStationClick = {stationId ->
                     navController.navigate(Destination.StationDetails.createRoute(stationId))
+                }
+            )
+        }
+
+        // ecran de detail d'une station
+        composable(
+            route = Destination.StationDetails.route,
+            arguments = listOf(
+                navArgument(NavArgs.STATION_ID) {
+                    type = NavType.IntType
+                }
+            )
+        ) { backStackEntry ->
+            val stationId = backStackEntry.arguments?.getInt(NavArgs.STATION_ID) ?: 0
+            val viewModel: StationDetailsViewModel = viewModel {
+                StationDetailsViewModel(stationRepository, stationId)
+            }
+            StationDetailScreen(
+                viewModel = viewModel,
+                onBackClick = {
+                    navController.popBackStack()
                 }
             )
         }

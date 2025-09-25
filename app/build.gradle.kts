@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace = "com.example.essence_togo"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.essence_togo"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
