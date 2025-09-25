@@ -15,12 +15,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.Directions
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
@@ -69,7 +74,9 @@ fun StationDetailScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
-    Column {
+    Column(
+        modifier = Modifier.fillMaxSize().statusBarsPadding()
+    ) {
         // Top app bar
         TopAppBar(
             title = {
@@ -113,7 +120,10 @@ fun StationDetailScreen(
                 }
 
                 uiState.station != null -> {
-
+                    StationDetailsContent(
+                        station = uiState.station!!,
+                        context = context
+                    )
                 }
             }
         }
@@ -126,7 +136,13 @@ fun StationDetailsContent(
     station: Station,
     context: Context
 ){
-    Column {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
         // image de la station
         Card(
             modifier = Modifier
@@ -176,19 +192,19 @@ fun StationDetailsContent(
 
                 // Adresse
                 DetailRow(
-                    icon = Icons.Default.LocationOn,
-                    label = "Adresse",
-                    value = station.address,
-                    valueColor = AddressColor
+                    icon        = Icons.Default.LocationOn,
+                    label       = "Adresse",
+                    value       = station.address,
+                    valueColor  = AddressColor
                 )
 
                 // distance si disponible
                 if (station.distance > 0) {
                     DetailRow(
-                        icon = Icons.Default.Directions,
-                        label = "Distance",
-                        value = station.getFormattedDistance(),
-                        valueColor = DistanceColor
+                        icon        = Icons.Default.Directions,
+                        label       = "Distance",
+                        value       = station.getFormattedDistance(),
+                        valueColor  = DistanceColor
                     )
                 }
             }
@@ -196,19 +212,63 @@ fun StationDetailsContent(
 
         // coordonnees gps (pour debug/info)
         if (station.latitude != 0.0 && station.longitude != 0.0) {
-            Card {
-                Column {
+            Card(
+                modifier    = Modifier.fillMaxWidth(),
+                elevation   = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                colors      = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer
+                )
+            ) {
+                Column(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)) {
                     Text(
-                        text = "Coordonnees GPS",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        text        = "Coordonnees GPS",
+                        style       = MaterialTheme.typography.titleMedium,
+                        fontWeight  = FontWeight.SemiBold,
+                        color       = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text(text = "Latitude: ${String.format("%.6f", station.latitude)}")
+                    Text(
+                        text    = "Latitude: ${String.format("%.6f", station.latitude)}",
+                        style   = MaterialTheme.typography.bodySmall,
+                        color   = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Text(
+                        text    = "Longitude: ${String.format("%.6f", station.longitude)}",
+                        style   = MaterialTheme.typography.bodySmall,
+                        color   = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
             }
         }
+
+        // bouton pour ouvrir Google maps
+        Button(
+            onClick     = { onpenGoogleMaps(context, station) },
+            modifier    = Modifier
+                .fillMaxWidth()
+                .height(56.dp),
+            colors      = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary
+            ),
+            shape       = RoundedCornerShape(16.dp)
+        ) {
+            Icon(
+                imageVector         = Icons.Default.Directions,
+                contentDescription  = "Directions",
+                modifier            = Modifier.size(24.dp)
+            )
+            Spacer(modifier = Modifier.width(12.dp))
+            Text(
+                text        = "Aller a cet endroit",
+                style       = MaterialTheme.typography.titleMedium,
+                fontWeight  = FontWeight.SemiBold
+            )
+        }
+
+        // espacement en bas
+        Spacer(modifier = Modifier.height(20.dp))
     }
 }
 
@@ -248,8 +308,8 @@ private fun DetailRow(
 private fun onpenGoogleMaps(context: Context, station: Station) {
     try {
         // creer l'URI pour google maps avec les coordonnees et le nom de la station
-        val geoUri = "geo:${station.latitude},${station.longitude}?q=${station.latitude},${station.longitude}(${station.nom})"
-        val mapIntent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
+        val geoUri      = "geo:${station.latitude},${station.longitude}?q=${station.latitude},${station.longitude}(${station.nom})"
+        val mapIntent   = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
 
         // definir explicitement googole maps comme application cible
         mapIntent.setPackage("com.google.android.apps.maps")
