@@ -1,16 +1,26 @@
 package com.example.essence_togo.presentation.ui.screens.details
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.compose.material.icons.filled.Directions
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
@@ -41,6 +51,8 @@ import com.example.essence_togo.R
 import com.example.essence_togo.data.model.Station
 import com.example.essence_togo.presentation.ui.components.ErrorState
 import com.example.essence_togo.presentation.ui.components.LoadingIndicator
+import com.example.essence_togo.presentation.ui.theme.AddressColor
+import com.example.essence_togo.presentation.ui.theme.DistanceColor
 
 @Composable
 @Preview(showBackground = true)
@@ -108,6 +120,7 @@ fun StationDetailScreen(
     }
 }
 
+@SuppressLint("DefaultLocale")
 @Composable
 fun StationDetailsContent(
     station: Station,
@@ -135,6 +148,7 @@ fun StationDetailsContent(
                 contentScale = ContentScale.Crop
             )
         }
+
         // informations principales
         Card(
             modifier            = Modifier.fillMaxWidth(),
@@ -160,7 +174,39 @@ fun StationDetailsContent(
 
                 Divider(color  = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f))
 
+                // Adresse
+                DetailRow(
+                    icon = Icons.Default.LocationOn,
+                    label = "Adresse",
+                    value = station.address,
+                    valueColor = AddressColor
+                )
 
+                // distance si disponible
+                if (station.distance > 0) {
+                    DetailRow(
+                        icon = Icons.Default.Directions,
+                        label = "Distance",
+                        value = station.getFormattedDistance(),
+                        valueColor = DistanceColor
+                    )
+                }
+            }
+        }
+
+        // coordonnees gps (pour debug/info)
+        if (station.latitude != 0.0 && station.longitude != 0.0) {
+            Card {
+                Column {
+                    Text(
+                        text = "Coordonnees GPS",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(text = "Latitude: ${String.format("%.6f", station.latitude)}")
+                }
             }
         }
     }
@@ -173,5 +219,53 @@ private fun DetailRow(
     value: String,
     valueColor: Color = MaterialTheme.colorScheme.onSurface
 ){
+    Row(
+        modifier            = Modifier.fillMaxWidth(),
+        verticalAlignment   = Alignment.Top
+    ) {
+        Icon(
+            imageVector         = icon,
+            contentDescription  = label,
+            tint                = MaterialTheme.colorScheme.primary,
+            modifier            = Modifier.size(20.dp)
+        )
+        Spacer(modifier = Modifier.width(12.dp))
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text    = label,
+                style   = MaterialTheme.typography.labelMedium,
+                color   = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Text(
+                text    = value,
+                style   = MaterialTheme.typography.labelMedium,
+                color   = valueColor
+            )
+        }
+    }
+}
 
+private fun onpenGoogleMaps(context: Context, station: Station) {
+    try {
+        // creer l'URI pour google maps avec les coordonnees et le nom de la station
+        val geoUri = "geo:${station.latitude},${station.longitude}?q=${station.latitude},${station.longitude}(${station.nom})"
+        val mapIntent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
+
+        // definir explicitement googole maps comme application cible
+        mapIntent.setPackage("com.google.android.apps.maps")
+
+        if (mapIntent.resolveActivity(context.packageManager) != null) {
+            context.startActivity(mapIntent)
+        } else {
+            // si google maps n'est pas installe, essayer d'ouvrir avec n'importe quel autre app de navigation
+            val genericMapIntent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
+            if (genericMapIntent.resolveActivity(context.packageManager) != null) {
+                context.startActivity(genericMapIntent)
+            } else {
+                Toast.makeText(context, "Aucune application de navigation disponible", Toast.LENGTH_SHORT).show()
+            }
+        }
+    } catch (e: Exception) {
+        Toast.makeText(context, "Erreur lors de l'ouverture de la navigation", Toast.LENGTH_SHORT).show()
+    }
 }
