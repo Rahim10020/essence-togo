@@ -48,19 +48,19 @@ app/src/main/java/com/example/essence_togo/
 ## 📷 Captures d'écran
 
 ### Écran d'accueil
-![Écran d'accueil](screenshots/accueil.png)
+![Écran d'accueil](screenshots/accueil1.png)
 *Vue principale avec la liste des stations proches*
 
 ### Recherche de stations
-![Recherche](screenshots/filter.png)
+![Recherche](screenshots/filter1.png)
 *Fonctionnalité de recherche par nom ou adresse*
 
 ### Détails d'une station
-![Détails station](screenshots/detail.png)
+![Détails station](screenshots/detail1.png)
 *Informations détaillées d'une station avec navigation*
 
 ### Historique
-![Historique](screenshots/history.png)
+![Historique](screenshots/history1.png)
 *Liste des stations récemment visitées*
 
 ## 🚀 Installation et Configuration
