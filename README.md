@@ -48,19 +48,19 @@ app/src/main/java/com/example/essence_togo/
 ## 📷 Captures d'écran
 
 ### Écran d'accueil
-![Écran d'accueil](screenshots/home_screen.png)
+![Écran d'accueil](screenshots/accueil.png)
 *Vue principale avec la liste des stations proches*
 
 ### Recherche de stations
-![Recherche](screenshots/search_screen.png)
+![Recherche](screenshots/filter.png)
 *Fonctionnalité de recherche par nom ou adresse*
 
 ### Détails d'une station
-![Détails station](screenshots/station_details.png)
+![Détails station](screenshots/detail.png)
 *Informations détaillées d'une station avec navigation*
 
 ### Historique
-![Historique](screenshots/history_screen.png)
+![Historique](screenshots/history.png)
 *Liste des stations récemment visitées*
 
 ## 🚀 Installation et Configuration
@@ -143,40 +143,6 @@ fun calculateDistance(userLat: Double, userLong: Double): Double {
 - Mise en cache des stations visitées
 - Limitation de l'historique à 50 stations maximum
 - Calcul de distance optimisé
-
-## 🤝 Contribution
-
-Les contributions sont les bienvenues ! Pour contribuer :
-
-1. **Fork** le projet
-2. Créez une **branche** pour votre fonctionnalité (`git checkout -b feature/nouvelle-fonctionnalite`)
-3. **Committez** vos changements (`git commit -m 'Ajout nouvelle fonctionnalité'`)
-4. **Push** vers la branche (`git push origin feature/nouvelle-fonctionnalite`)
-5. Ouvrez une **Pull Request**
-
-## 🐛 Signaler un bug
-
-Pour signaler un bug, veuillez créer une issue avec :
-- Description détaillée du problème
-- Étapes pour reproduire
-- Version Android et modèle d'appareil
-- Captures d'écran si applicable
-
-## 📄 Licence
-
-Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
-
-## 👨‍💻 Auteur
-
-**Votre Nom**
-- GitHub: [@votre-username](https://github.com/votre-username)
-- Email: votre.email@example.com
-
-## 🙏 Remerciements
-
-- [Firebase](https://firebase.google.com/) pour la base de données en temps réel
-- [Google](https://developer.android.com/) pour Android et Jetpack Compose
-- [Material Design](https://material.io/) pour le système de design
 
 ---
 
