@@ -3,7 +3,6 @@ package com.example.essence_togo.presentation.ui.screens.details
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,8 +27,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
+import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -58,6 +58,7 @@ import com.example.essence_togo.presentation.ui.components.ErrorState
 import com.example.essence_togo.presentation.ui.components.LoadingIndicator
 import com.example.essence_togo.presentation.ui.theme.AddressColor
 import com.example.essence_togo.presentation.ui.theme.DistanceColor
+import androidx.core.net.toUri
 
 @Composable
 @Preview(showBackground = true)
@@ -188,7 +189,11 @@ fun StationDetailsContent(
                     modifier    = Modifier.fillMaxWidth()
                 )
 
-                Divider(color  = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f))
+                HorizontalDivider(
+                    Modifier,
+                    DividerDefaults.Thickness,
+                    color = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
+                )
 
                 // Adresse
                 DetailRow(
@@ -309,7 +314,7 @@ private fun onpenGoogleMaps(context: Context, station: Station) {
     try {
         // creer l'URI pour google maps avec les coordonnees et le nom de la station
         val geoUri      = "geo:${station.latitude},${station.longitude}?q=${station.latitude},${station.longitude}(${station.nom})"
-        val mapIntent   = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
+        val mapIntent   = Intent(Intent.ACTION_VIEW, geoUri.toUri())
 
         // definir explicitement googole maps comme application cible
         mapIntent.setPackage("com.google.android.apps.maps")
@@ -318,7 +323,7 @@ private fun onpenGoogleMaps(context: Context, station: Station) {
             context.startActivity(mapIntent)
         } else {
             // si google maps n'est pas installe, essayer d'ouvrir avec n'importe quel autre app de navigation
-            val genericMapIntent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
+            val genericMapIntent = Intent(Intent.ACTION_VIEW, geoUri.toUri())
             if (genericMapIntent.resolveActivity(context.packageManager) != null) {
                 context.startActivity(genericMapIntent)
             } else {
@@ -326,6 +331,6 @@ private fun onpenGoogleMaps(context: Context, station: Station) {
             }
         }
     } catch (e: Exception) {
-        Toast.makeText(context, "Erreur lors de l'ouverture de la navigation", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "Erreur lors de l'ouverture de la navigation: $e", Toast.LENGTH_SHORT).show()
     }
 }

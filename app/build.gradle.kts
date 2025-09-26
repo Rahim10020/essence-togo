@@ -1,7 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    id("com.google.gms.google-services")
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -40,9 +41,8 @@ android {
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
-    }
+    // NOTE: composeOptions n'est plus nécessaire avec le plugin Compose Compiler
+    // Le plugin gère automatiquement la compatibilité du compilateur
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -68,12 +68,11 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.9.3")
 
     // ViewModel Compose
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.2")
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.9.2")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.4")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.9.4")
 
-    // Firebase (Realtime Database)
-    implementation("com.google.firebase:firebase-database-ktx:21.0.0")
-    implementation("com.google.firebase:firebase-bom:34.1.0")
+    // Firebase (Realtime Database) - Versions mises à jour
+    implementation(libs.firebase.database)
 
     // Location Services (GPS)
     implementation("com.google.android.gms:play-services-location:21.3.0")
@@ -83,7 +82,6 @@ dependencies {
 
     // Material Icons Extended (pour plus d'icônes)
     implementation("androidx.compose.material:material-icons-extended:1.7.8")
-    implementation(libs.firebase.database)
 
     // ============= TESTS ACTUELS =============
     testImplementation(libs.junit)
