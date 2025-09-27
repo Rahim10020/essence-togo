@@ -2,7 +2,7 @@
 - voir s'il faut ameliorer le design
 - remplacer les String en dur qui sont dans l'app par des strings.xml
 - faire en sorte que chaque station ait plusieurs images
-- voir comment faire en sorte que l'appli soit accessible aux phones dont les api sont < 36
+- voir comment faire en sorte    que l'appli soit accessible aux phones dont les api sont < 36
 - generer l'apk si tout est bon.
 
 ============================== -----  ==============================
