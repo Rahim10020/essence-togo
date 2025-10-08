@@ -1,89 +1,97 @@
 # Essence Togo 🛣️⛽
 
-Une application mobile Android moderne pour localiser les stations-service au Togo, développée avec Jetpack Compose et Firebase.
+A modern Android mobile application for locating gas stations in Togo, built with Jetpack Compose and Firebase.
 
-## 📱 Fonctionnalités
+## 📖 Description
 
-- **🗺️ Localisation des stations** : Trouvez les stations-service les plus proches de votre position
-- **📍 Géolocalisation** : Calcul automatique des distances avec votre position actuelle
-- **🔍 Recherche avancée** : Recherchez par nom de station ou adresse
-- **📋 Historique** : Consultez vos dernières stations visitées
-- **🎨 Interface moderne** : Design moderne avec Material Design 3
-- **⚡ Temps réel** : Données synchronisées en temps réel avec Firebase
+Essence Togo is a mobile application designed specifically for drivers in Togo who need to quickly find nearby gas stations. The app combines real-time geolocation with Firebase cloud database to provide accurate, up-to-date information about fuel stations across the country.
+
+Built with modern Android development technologies including Jetpack Compose for a smooth, reactive user interface and Firebase Realtime Database for instant data synchronization, the app offers an intuitive experience that helps users locate stations, calculate distances from their current position, search by name or address, and maintain a history of visited stations.
+
+Whether you're traveling in an unfamiliar area or simply looking for the closest station, Essence Togo provides a reliable solution with its clean Material Design 3 interface and efficient geolocation features. The app automatically sorts stations by proximity, updates distances in real-time as you move, and integrates seamlessly with Google Maps for turn-by-turn navigation to your selected station.
+
+## 📱 Features
+
+- **🗺️ Station Locator**: Find gas stations closest to your current position
+- **📍 Geolocation**: Automatic distance calculation from your current location
+- **🔍 Advanced Search**: Search by station name or address
+- **📋 History**: View your recently visited stations
+- **🎨 Modern Interface**: Modern design with Material Design 3
+- **⚡ Real-time**: Data synchronized in real-time with Firebase
 
 ## 🏗️ Architecture
 
-L'application suit une architecture MVVM (Model-View-ViewModel) avec les composants suivants :
+The application follows an MVVM (Model-View-ViewModel) architecture with the following components:
 
-### 📂 Structure du projet
+### 📂 Project Structure
 
 ```
 app/src/main/java/com/example/essence_togo/
 ├── data/
 │   ├── local/
-│   │   └── PreferencesManager.kt          # Gestion des préférences locales
+│   │   └── PreferencesManager.kt          # Local preferences management
 │   ├── model/
-│   │   └── Station.kt                     # Modèle de données des stations
+│   │   └── Station.kt                     # Station data model
 │   └── repository/
-│       └── StationRepository.kt           # Couche d'accès aux données
+│       └── StationRepository.kt           # Data access layer
 ├── presentation/
 │   └── ui/
-│       ├── navigation/                    # Navigation de l'app
-│       └── theme/                         # Thème Material Design
+│       ├── navigation/                    # App navigation
+│       └── theme/                         # Material Design theme
 ├── utils/
-│   └── LocationManager.kt                 # Gestionnaire de géolocalisation
-└── MainActivity.kt                        # Activité principale
+│   └── LocationManager.kt                 # Geolocation manager
+└── MainActivity.kt                        # Main activity
 ```
 
-### 🛠️ Technologies utilisées
+### 🛠️ Technologies Used
 
-- **Kotlin** - Langage de programmation principal
-- **Jetpack Compose** - Interface utilisateur moderne et déclarative
-- **Firebase Realtime Database** - Base de données en temps réel
-- **Material Design 3** - Design system moderne de Google
-- **Navigation Compose** - Navigation entre les écrans
-- **Coroutines & Flow** - Programmation asynchrone et réactive
-- **Location Services** - Services de géolocalisation Android
+- **Kotlin** - Main programming language
+- **Jetpack Compose** - Modern, declarative user interface
+- **Firebase Realtime Database** - Real-time database
+- **Material Design 3** - Google's modern design system
+- **Navigation Compose** - Navigation between screens
+- **Coroutines & Flow** - Asynchronous and reactive programming
+- **Location Services** - Android geolocation services
 
-## 📷 Captures d'écran
+## 📷 Screenshots
 
-### Écran d'accueil
-![Écran d'accueil](screenshots/accueil1.png)
-*Vue principale avec la liste des stations proches*
+### Home Screen
+![Home Screen](screenshots/accueil1.png)
+*Main view with list of nearby stations*
 
-### Recherche de stations
-![Recherche](screenshots/filter1.png)
-*Fonctionnalité de recherche par nom ou adresse*
+### Station Search
+![Search](screenshots/filter1.png)
+*Search functionality by name or address*
 
-### Détails d'une station
-![Détails station](screenshots/detail1.png)
-*Informations détaillées d'une station avec navigation*
+### Station Details
+![Station Details](screenshots/detail1.png)
+*Detailed station information with navigation*
 
-### Historique
-![Historique](screenshots/history1.png)
-*Liste des stations récemment visitées*
+### History
+![History](screenshots/history1.png)
+*List of recently visited stations*
 
-## 🚀 Installation et Configuration
+## 🚀 Installation and Setup
 
-### Prérequis
-- Android Studio Arctic Fox (2021.3.1) ou plus récent
-- JDK 8 ou plus récent
-- SDK Android 21+ (Android 5.0)
-- Compte Firebase avec projet configuré
+### Prerequisites
+- Android Studio Arctic Fox (2021.3.1) or newer
+- JDK 8 or higher
+- Android SDK 21+ (Android 5.0)
+- Firebase account with configured project
 
-### 1. Clonage du projet
+### 1. Clone the Project
 ```bash
-git clone https://github.com/votre-username/essence-togo.git
+git clone https://github.com/Rahim10020/essence-togo.git
 cd essence-togo
 ```
 
-### 2. Configuration Firebase
-1. Créez un nouveau projet sur [Firebase Console](https://console.firebase.google.com/)
-2. Activez **Realtime Database**
-3. Téléchargez le fichier `google-services.json`
-4. Placez-le dans le dossier `app/`
+### 2. Firebase Configuration
+1. Create a new project on [Firebase Console](https://console.firebase.google.com/)
+2. Enable **Realtime Database**
+3. Download the `google-services.json` file
+4. Place it in the `app/` folder
 
-### 3. Structure de la base de données Firebase
+### 3. Firebase Database Structure
 ```json
 {
   "stations": {
@@ -108,42 +116,54 @@ cd essence-togo
 ```
 
 ### 4. Permissions
-L'application requiert les permissions suivantes (déjà configurées dans le manifest) :
-- `ACCESS_FINE_LOCATION` - Localisation précise
-- `ACCESS_COARSE_LOCATION` - Localisation approximative
-- `INTERNET` - Connexion internet
-- `ACCESS_NETWORK_STATE` - État du réseau
+The application requires the following permissions (already configured in the manifest):
+- `ACCESS_FINE_LOCATION` - Precise location
+- `ACCESS_COARSE_LOCATION` - Approximate location
+- `INTERNET` - Internet connection
+- `ACCESS_NETWORK_STATE` - Network state
 
-## 🔧 Utilisation
+## 🔧 Usage
 
-1. **Premier lancement** : L'app demande les permissions de localisation
-2. **Navigation** : Utilisez la barre de navigation en bas pour naviguer
-3. **Recherche** : Tapez dans la barre de recherche pour filtrer les stations
-4. **Détails** : Touchez une station pour voir ses détails et naviguer
-5. **Navigation** : Touchez le bouton de navigation pour ouvrir Google Maps
+1. **First Launch**: The app requests location permissions
+2. **Navigation**: Use the bottom navigation bar to navigate
+3. **Search**: Type in the search bar to filter stations
+4. **Details**: Touch a station to see its details and navigate
+5. **Navigation**: Touch the navigation button to open Google Maps
 
-## 📊 Fonctionnalités techniques
+## 📊 Technical Features
 
-### Calcul de distance
-L'application utilise la formule de Haversine pour calculer la distance entre votre position et les stations :
+### Distance Calculation
+The application uses the Haversine formula to calculate the distance between your position and the stations:
 
 ```kotlin
 fun calculateDistance(userLat: Double, userLong: Double): Double {
-    val earthRadius = 6371.0 // Rayon de la Terre en km
-    // ... calcul Haversine
+    val earthRadius = 6371.0 // Earth's radius in km
+    // ... Haversine calculation
 }
 ```
 
-### Gestion de l'état
-- **StateFlow** pour les données réactives
-- **SharedPreferences** pour la persistance locale
-- **Firebase Realtime Database** pour les données temps réel
+### State Management
+- **StateFlow** for reactive data
+- **SharedPreferences** for local persistence
+- **Firebase Realtime Database** for real-time data
 
 ### Performance
-- Mise en cache des stations visitées
-- Limitation de l'historique à 50 stations maximum
-- Calcul de distance optimisé
+- Caching of visited stations
+- History limited to maximum 50 stations
+- Optimized distance calculation
+
+## 🗺️ Future Enhancements
+- [ ] Fuel price comparison
+- [ ] Station reviews and ratings
+- [ ] Favorite stations
+- [ ] Route planning with multiple stops
+- [ ] Push notifications for nearby stations
+- [ ] Payment integration
+- [ ] Loyalty program integration
+- [ ] Offline maps
+- [ ] Multi-language support (French, English, Ewe)
+- [ ] Station amenities filtering (restrooms, car wash, etc.)
 
 ---
 
-Made with ❤️ pour la communauté togolaise
+Made with ❤️ for the Togolese community
