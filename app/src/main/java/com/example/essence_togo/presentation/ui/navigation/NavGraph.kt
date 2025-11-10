@@ -8,6 +8,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.essence_togo.data.local.CacheManager
 import com.example.essence_togo.data.local.PreferencesManager
 import com.example.essence_togo.data.repository.StationRepository
 import com.example.essence_togo.presentation.ui.screens.details.StationDetailScreen
@@ -23,6 +24,7 @@ import com.example.essence_togo.presentation.ui.screens.home.HomeViewModel
 import com.example.essence_togo.presentation.ui.screens.settings.SettingsScreen
 import com.example.essence_togo.presentation.ui.screens.settings.SettingsViewModel
 import com.example.essence_togo.utils.LocationManager
+import com.example.essence_togo.utils.NetworkManager
 
 @Composable
 fun NavGraph(
@@ -31,7 +33,9 @@ fun NavGraph(
 ){
 
     val context             = LocalContext.current
-    val stationRepository   = StationRepository()
+    val networkManager      = NetworkManager(context)
+    val cacheManager        = CacheManager(context)
+    val stationRepository   = StationRepository(cacheManager, networkManager)
     val preferencesManager  = PreferencesManager(context)
     val locationManager     = LocationManager(context)
 
@@ -42,7 +46,8 @@ fun NavGraph(
                 HomeViewModel(
                     stationRepository   = stationRepository,
                     locationManager     = locationManager,
-                    preferencesManager  = preferencesManager
+                    preferencesManager  = preferencesManager,
+                    networkManager      = networkManager
                 )
             }
             HomeScreen(
@@ -62,7 +67,8 @@ fun NavGraph(
                 FilterViewModel(
                     stationRepository   = stationRepository,
                     locationManager     = locationManager,
-                    preferencesManager  = preferencesManager
+                    preferencesManager  = preferencesManager,
+                    networkManager      = networkManager
                 )
             }
             FilterScreen(
@@ -112,7 +118,7 @@ fun NavGraph(
             )
         }
 
-        // ecran des parametres
+        // ecran des parametres (pas dans bottom nav)
         composable(Destination.Settings.route) {
             val viewModel: SettingsViewModel = viewModel {
                 SettingsViewModel(context = context)

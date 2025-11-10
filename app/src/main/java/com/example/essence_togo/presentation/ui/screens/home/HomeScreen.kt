@@ -19,7 +19,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -29,7 +28,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.essence_togo.R
@@ -37,13 +35,8 @@ import com.example.essence_togo.data.model.Station
 import com.example.essence_togo.presentation.ui.components.EmptyState
 import com.example.essence_togo.presentation.ui.components.ErrorState
 import com.example.essence_togo.presentation.ui.components.LoadingIndicator
+import com.example.essence_togo.presentation.ui.components.OfflineIndicator
 import com.example.essence_togo.presentation.ui.components.StationCard
-
-@Composable
-@Preview
-fun HomeScreenPreview(){
-    //HomeScreen()
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -89,6 +82,9 @@ fun HomeScreen(
             )
         )
 
+        // Indicateur de mode offline
+        OfflineIndicator(isOffline = uiState.isOffline)
+
         // contenu principal
         Box(modifier = Modifier.fillMaxSize()) {
             when {
@@ -117,6 +113,7 @@ fun HomeScreen(
                 else -> {
                     StationsList(
                         stations   = uiState.stations,
+                        isOffline  = uiState.isOffline,
                         onStationClick      = { station ->
                             viewModel.onStationClick(station)
                             onStationClick(station.id)
@@ -134,6 +131,7 @@ fun HomeScreen(
 @Composable
 private fun StationsList(
     stations: List<Station>,
+    isOffline: Boolean,
     onStationClick: (Station) -> Unit,
     onToggleFavorite: (Station) -> Unit
 ){
@@ -145,7 +143,10 @@ private fun StationsList(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 4.dp),
                 colors      = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                    containerColor = if (isOffline)
+                        MaterialTheme.colorScheme.errorContainer
+                    else
+                        MaterialTheme.colorScheme.primaryContainer
                 )
             ) {
                 Row(
@@ -154,20 +155,28 @@ private fun StationsList(
                         .padding(16.dp),
                     verticalAlignment   = Alignment.CenterVertically
                 ) {
-                    Text(
-                        text        = "${stations.size} station${if (stations.size > 1) "s" else ""} " +
-                                "trouvee${if (stations.size > 1) "s" else ""}",
-                        style       = MaterialTheme.typography.bodyMedium,
-                        fontWeight  = FontWeight.Medium,
-                        color       = MaterialTheme.colorScheme.onPrimaryContainer
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
-                    if (stations.isNotEmpty() && stations.first().distance > 0) {
+                    Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            text    = stringResource(id = R.string.sorted_by_distance),
-                            style   = MaterialTheme.typography.bodySmall,
-                            color   = MaterialTheme.colorScheme.onPrimaryContainer
+                            text        = "${stations.size} station${if (stations.size > 1) "s" else ""} " +
+                                    if (isOffline) "en cache" else "trouvée${if (stations.size > 1) "s" else ""}",
+                            style       = MaterialTheme.typography.bodyMedium,
+                            fontWeight  = FontWeight.Medium,
+                            color       = if (isOffline)
+                                MaterialTheme.colorScheme.onErrorContainer
+                            else
+                                MaterialTheme.colorScheme.onPrimaryContainer
                         )
+
+                        if (stations.isNotEmpty() && stations.first().distance > 0) {
+                            Text(
+                                text    = "Triées par distance",
+                                style   = MaterialTheme.typography.bodySmall,
+                                color   = if (isOffline)
+                                    MaterialTheme.colorScheme.onErrorContainer
+                                else
+                                    MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+                        }
                     }
                 }
             }

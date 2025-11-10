@@ -71,8 +71,10 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.4")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.9.4")
 
-    // Firebase (Realtime Database) - Versions mises à jour
+    // Firebase (Realtime Database)
     implementation(libs.firebase.database)
+    // Gson pour la sérialisation JSON (cache des stations)
+    implementation("com.google.code.gson:gson:2.10.1")
 
     // Location Services (GPS)
     implementation("com.google.android.gms:play-services-location:21.3.0")
