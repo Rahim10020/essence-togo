@@ -13,13 +13,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.essence_togo.R
 
 @Composable
 fun LoadingIndicator(
     modifier: Modifier  = Modifier,
-    message: String     = "Chagement des stations..."
+    message: String     = stringResource(R.string.loading_stations),
 ) {
     Column(
         modifier            = Modifier.fillMaxWidth(),
@@ -70,8 +72,8 @@ fun EmptyState(
 @Composable
 fun ErrorState(
     modifier: Modifier      = Modifier,
-    title: String           = "Erreur de connexion",
-    subtitle: String        = "Verifiez votre connexion internet et reessayer",
+    title: String           = stringResource(id = R.string.error_connection),
+    subtitle: String        = stringResource(id = R.string.retry),
     onRetry: (() -> Unit)?  = null,
 ) {
     Column(
@@ -98,7 +100,7 @@ fun ErrorState(
                 onClick = onRetry,
                 colors  = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
             ) {
-                Text(text = "Reesayer")
+                Text(text = stringResource(id = R.string.retry))
             }
         }
     }
