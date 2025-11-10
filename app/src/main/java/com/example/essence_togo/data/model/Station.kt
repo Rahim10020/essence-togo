@@ -7,16 +7,24 @@ import kotlin.math.sin
 import kotlin.math.sqrt
 
 data class Station(
-    val id: Int             = 0,
-    val nom: String         = "",
-    val imageUrl: String    = "",
-    val address: String     = "",
-    val latitude: Double    = 0.0,
-    val longitude: Double   = 0.0,
-    var distance: Double    = 0.0
+    val id: Int                 = 0,
+    val nom: String             = "",
+    val imageUrl: String        = "",
+    val imageUrls: List<String> = emptyList(),
+    val address: String         = "",
+    val latitude: Double        = 0.0,
+    val longitude: Double       = 0.0,
+    var distance: Double        = 0.0
 ){
     // constructeur sans parametre pour firebase.
-    constructor() : this(0,"","","",0.0,0.0,0.0)
+    constructor() : this(0,"","", emptyList(),"",0.0,0.0,0.0)
+
+    fun getAllImages(): List<String> {
+        val allImages = mutableListOf<String>()
+        if (imageUrl.isNotBlank()) allImages.add(imageUrl)
+        allImages.addAll(imageUrls)
+        return allImages
+    }
 
     // calcul de la distance entre la station et la position de l'utilisateur
     // methode Haversine
