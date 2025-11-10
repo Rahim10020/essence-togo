@@ -3,6 +3,7 @@ package com.example.essence_togo.presentation.ui.screens.details
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.essence_togo.data.local.PreferencesManager
 import com.example.essence_togo.data.model.Station
 import com.example.essence_togo.data.repository.StationRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,7 +11,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
-
 
 data class StationDetailUiState(
     val station: Station?   = null,
@@ -22,6 +22,7 @@ data class StationDetailUiState(
 class StationDetailsViewModel(
     private val stationRepository: StationRepository,
     private val stationId: Int,
+    private val preferencesManager: PreferencesManager
 ): ViewModel() {
     private val _uiState = MutableStateFlow(StationDetailUiState())
     val uiState: StateFlow<StationDetailUiState> = _uiState.asStateFlow()
@@ -52,7 +53,10 @@ class StationDetailsViewModel(
                         )
                     }
                     .collect { stations ->
-                        val station = stations.find { it.id == stationId}
+                        // Mettre à jour le statut favori de toutes les stations
+                        val stationsWithFavorites = preferencesManager.updateStationsWithFavoriteStatus(stations)
+
+                        val station = stationsWithFavorites.find { it.id == stationId}
                         if (station != null) {
                             _uiState.value = _uiState.value.copy(
                                 station     = station,
@@ -75,6 +79,17 @@ class StationDetailsViewModel(
                     error       = "Erreur de connexion"
                 )
             }
+        }
+    }
+
+    fun toggleFavorite() {
+        _uiState.value.station?.let { station ->
+            preferencesManager.toggleFavoriteStation(station)
+            // Mettre à jour l'UI localement
+            _uiState.value = _uiState.value.copy(
+                station = station.copy(isFavorite = !station.isFavorite)
+            )
+            Log.d(TAG, "Statut favori basculé pour: ${station.nom}")
         }
     }
 

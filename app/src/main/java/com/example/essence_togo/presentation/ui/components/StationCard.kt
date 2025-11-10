@@ -35,7 +35,8 @@ import com.example.essence_togo.presentation.ui.theme.DistanceColor
 fun StationCard(
     station: Station,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onToggleFavorite: ((Station) -> Unit)? = null  // Optionnel pour rétrocompatibilité
 ){
     Card(
         onClick     = onClick,
@@ -60,13 +61,14 @@ fun StationCard(
                 .placeholder(R.drawable.ic_launcher_background)
                 .error(R.drawable.ic_launcher_background)
                 .build(),
-                contentDescription  = stringResource(R.string.station_image_content_description,station.nom),
+                contentDescription  = stringResource(id = R.string.station_image_content_description, station.nom),
                 modifier            = Modifier
                     .size(80.dp)
                     .clip(RoundedCornerShape(8.dp)),
                 contentScale        = ContentScale.Crop
             )
             Spacer(modifier = Modifier.width(16.dp))
+
             // informations sur la station
             Column(
                 modifier = Modifier.weight(1f)
@@ -100,9 +102,17 @@ fun StationCard(
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = DistanceColor
-                            )
+                        )
                     }
                 }
+            }
+
+            // Bouton favori (si le callback est fourni)
+            if (onToggleFavorite != null) {
+                FavoriteButton(
+                    isFavorite = station.isFavorite,
+                    onToggleFavorite = { onToggleFavorite(station) }
+                )
             }
         }
     }

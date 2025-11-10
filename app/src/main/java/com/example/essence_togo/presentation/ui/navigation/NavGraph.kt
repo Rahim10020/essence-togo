@@ -12,6 +12,8 @@ import com.example.essence_togo.data.local.PreferencesManager
 import com.example.essence_togo.data.repository.StationRepository
 import com.example.essence_togo.presentation.ui.screens.details.StationDetailScreen
 import com.example.essence_togo.presentation.ui.screens.details.StationDetailsViewModel
+import com.example.essence_togo.presentation.ui.screens.favorites.FavoritesScreen
+import com.example.essence_togo.presentation.ui.screens.favorites.FavoritesViewModel
 import com.example.essence_togo.presentation.ui.screens.filter.FilterScreen
 import com.example.essence_togo.presentation.ui.screens.filter.FilterViewModel
 import com.example.essence_togo.presentation.ui.screens.history.HistoryScreen
@@ -66,6 +68,21 @@ fun NavGraph(
             )
         }
 
+        // ecran des favoris
+        composable(BottomNavDestination.Favorites.route) {
+            val viewModel: FavoritesViewModel = viewModel {
+                FavoritesViewModel(
+                    preferencesManager = preferencesManager
+                )
+            }
+            FavoritesScreen (
+                viewModel = viewModel,
+                onStationClick = { stationId ->
+                    navController.navigate(Destination.StationDetails.createRoute(stationId))
+                }
+            )
+        }
+
         // ecran pour l'historique
         composable(BottomNavDestination.History.route) {
             val viewModel: HistoryViewModel = viewModel {
@@ -92,7 +109,11 @@ fun NavGraph(
         ) { backStackEntry ->
             val stationId = backStackEntry.arguments?.getInt(NavArgs.STATION_ID) ?: 0
             val viewModel: StationDetailsViewModel = viewModel {
-                StationDetailsViewModel(stationRepository, stationId)
+                StationDetailsViewModel(
+                    stationRepository = stationRepository,
+                    stationId = stationId,
+                    preferencesManager = preferencesManager
+                )
             }
             StationDetailScreen(
                 viewModel = viewModel,

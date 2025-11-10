@@ -32,6 +32,23 @@
     <string name="confirm">Confirmer</string>
     <string name="cancel">Annuler</string>
 
+    <!-- Favorites Screen -->
+    <string name="nav_favorites">Favoris</string>
+    <string name="favorites_title">Favoris</string>
+    <string name="favorites_subtitle">Vos stations préférées</string>
+    <string name="favorite_stations">%d station(s) favorite(s)</string>
+    <string name="clear_favorites">Vider</string>
+    <string name="clear_favorites_title">Vider les favoris</string>
+    <string name="clear_favorites_message">Êtes-vous sûr de vouloir supprimer toutes les stations favorites ? Cette action ne peut pas être annulée.</string>
+    <string name="no_favorites_title">Aucun favori</string>
+    <string name="no_favorites_subtitle">Ajoutez des stations à vos favoris en appuyant sur l\'étoile ⭐</string>
+    <string name="loading_favorites">Chargement des favoris…</string>
+
+    <!-- Favorite button -->
+    <string name="add_to_favorites">Ajouter aux favoris</string>
+    <string name="remove_from_favorites">Retirer des favoris</string>
+    <string name="toggle_favorite">Basculer favori</string>
+
     <!-- Station Details -->
     <string name="station_details_title">Détails de la station</string>
     <string name="station_address_label">Adresse</string>

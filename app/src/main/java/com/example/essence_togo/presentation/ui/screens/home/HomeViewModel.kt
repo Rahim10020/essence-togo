@@ -66,15 +66,22 @@ class HomeViewModel(
                         } else {
                             stations
                         }
+
+                        // Mettre à jour le statut favori de toutes les stations
+                        val stationsWithFavorites = preferencesManager.updateStationsWithFavoriteStatus(processedStations)
+
                         // mise a jour des stations visitees avec les details
-                        preferencesManager.updateVisitedStationsWithDetails(stations)
+                        preferencesManager.updateVisitedStationsWithDetails(stationsWithFavorites)
+
+                        // mise à jour des stations favorites avec les détails
+                        preferencesManager.updateFavoriteStationsWithDetails(stationsWithFavorites)
 
                         _uiState.value  = _uiState.value.copy(
-                            stations    = processedStations,
+                            stations    = stationsWithFavorites,
                             isLoading   = false,
                             error       =  null,
                         )
-                        Log.d(TAG, "Stations chargees et triees ${processedStations.size}")
+                        Log.d(TAG, "Stations chargees et triees ${stationsWithFavorites.size}")
                     }
             } catch (exception: Exception) {
                 Log.e(TAG, "Erreur generale dans loadDate", exception)
@@ -105,6 +112,11 @@ class HomeViewModel(
         // ajouter la station aux stations visitees
         preferencesManager.addVisitedStation(station)
         Log.d(TAG, "Station ajoutee a l'historique ${station.nom}")
+    }
+
+    fun toggleFavorite(station: Station) {
+        preferencesManager.toggleFavoriteStation(station)
+        Log.d(TAG, "Statut favori basculé pour: ${station.nom}")
     }
 
     fun retry() {

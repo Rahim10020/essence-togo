@@ -61,14 +61,14 @@ fun HomeScreen(
                     .padding(16.dp)
             ) {
                 Text(
-                    text        = stringResource(id = R.string.home_title),
+                    text        = "EssenceTogo",
                     style       = MaterialTheme.typography.headlineLarge,
                     fontWeight  = FontWeight.Bold,
                     color       = MaterialTheme.colorScheme.primary
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text    = stringResource(id = R.string.home_subtitle),
+                    text    = "Stations les plus proches",
                     style   = MaterialTheme.typography.titleMedium,
                     color   = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -80,12 +80,12 @@ fun HomeScreen(
                 uiState.isLoading -> {
                     LoadingIndicator(
                         modifier    = Modifier.align(Alignment.Center),
-                        message     = stringResource(id = R.string.loading_location)
+                        message     = "Recuperation de votre position et des stations"
                     )
                 }
                 uiState.error != null -> {
                     ErrorState(
-                        title       = stringResource(id = R.string.error_title),
+                        title       = "Oops !",
                         subtitle    = uiState.error!!,
                         onRetry     = {viewModel.retry()},
                         modifier    = Modifier.align(Alignment.Center),
@@ -93,8 +93,8 @@ fun HomeScreen(
                 }
                 uiState.stations.isEmpty() -> {
                     EmptyState(
-                        title       = stringResource(id = R.string.no_stations_title),
-                        subtitle    = stringResource(id = R.string.no_stations_subtitle),
+                        title       = "Aucune station trouvee",
+                        subtitle    = "Verifiez votre connexion internet",
                         modifier    = Modifier.align(Alignment.Center)
                     )
                 }
@@ -105,6 +105,9 @@ fun HomeScreen(
                         onStationClick      = { station ->
                             viewModel.onStationClick(station)
                             onStationClick(station.id)
+                        },
+                        onToggleFavorite = { station ->
+                            viewModel.toggleFavorite(station)
                         }
                     )
                 }
@@ -116,7 +119,8 @@ fun HomeScreen(
 @Composable
 private fun StationsList(
     stations: List<Station>,
-    onStationClick: (Station) -> Unit
+    onStationClick: (Station) -> Unit,
+    onToggleFavorite: (Station) -> Unit
 ){
     LazyColumn {
         // afficher un indicateur du nombre de stations
@@ -145,7 +149,7 @@ private fun StationsList(
                     Spacer(modifier = Modifier.weight(1f))
                     if (stations.isNotEmpty() && stations.first().distance > 0) {
                         Text(
-                            text    = stringResource(id = R.string.sorted_by_distance),
+                            text    = "Triees par distance",
                             style   = MaterialTheme.typography.bodySmall,
                             color   = MaterialTheme.colorScheme.onPrimaryContainer
                         )
@@ -161,7 +165,8 @@ private fun StationsList(
         ){ station ->
             StationCard(
                 station = station,
-                onClick = { onStationClick(station) }
+                onClick = { onStationClick(station) },
+                onToggleFavorite = onToggleFavorite
             )
         }
 
