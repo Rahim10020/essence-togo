@@ -62,8 +62,10 @@ class PreferencesManager(context: Context) {
         val stationIdsString = prefs.getString(KEY_VISITED_STATIONS, "") ?: ""
         if (stationIdsString.isNotEmpty()){
             val stationIds = stationIdsString.split(",").mapNotNull { it.toIntOrNull() }
-            // Note: Dans une vraie app, il faudrait récupérer les détails complets des stations
-            // depuis Firebase basé sur ces IDs. Pour simplifier, on garde juste les IDs pour l'instant.
+            // Les IDs sont chargés au démarrage
+            // Les détails complets des stations sont récupérés via updateVisitedStationsWithDetails()
+            // qui est appelé automatiquement depuis HomeViewModel après le chargement Firebase
+            // Ce système permet de conserver l'ordre de l'historique même après redémarrage
         }
     }
 

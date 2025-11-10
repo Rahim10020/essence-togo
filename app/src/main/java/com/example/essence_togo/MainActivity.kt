@@ -73,16 +73,15 @@ class MainActivity : ComponentActivity() {
 
     private fun showPermissionSettingsDialog() {
         AlertDialog.Builder(this)
-            .setTitle("Permission requise")
-            .setMessage("La permission de localisation est necessaire pour trouver les stations les plus proches." +
-                    "Voulez-vous activer la permission dans les parametres?")
-            .setPositiveButton("Oui") { _, _ ->
+            .setTitle(R.string.permission_required_title)
+            .setMessage(R.string.permission_location_message)
+            .setPositiveButton(R.string.yes) { _, _ ->
                 val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
                     data = Uri.fromParts("package", packageName, null)
                 }
                 startActivity(intent)
             }
-            .setNegativeButton("Non", null)
+            .setNegativeButton(R.string.no, null)
             .show()
     }
 }

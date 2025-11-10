@@ -99,6 +99,7 @@ class FilterViewModel(
 
     fun onSearchQueryChange(query: String) {
         _uiState.value = _uiState.value.copy(searchQuery = query)
+        filterStations(query)
     }
 
     private fun filterStations(query: String) {
