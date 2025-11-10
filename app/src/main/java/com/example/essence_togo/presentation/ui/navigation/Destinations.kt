@@ -38,11 +38,13 @@ sealed class BottomNavDestination(
     )
 }
 
-// autres destinations
+// autres destinations (pas dans la bottom nav)
 sealed class Destination(val route: String) {
     data object StationDetails: Destination("station_details/{stationId}") {
         fun createRoute(stationId: Int) = "station_details/$stationId"
     }
+
+    data object Settings: Destination("settings")
 }
 
 // liste de toutes les destinations de la bottomNavigation

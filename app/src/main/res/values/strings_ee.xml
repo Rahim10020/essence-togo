@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Essence Togo</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Aƒe</string>
+    <string name="nav_filter">Tiatia</string>
+    <string name="nav_favorites">Lɔlɔ̃tɔwo</string>
+    <string name="nav_history">Ŋutinya</string>
+    <string name="nav_settings">Tɔtrɔwo</string>
+
+    <!-- Home Screen -->
+    <string name="home_title">EssenceTogo</string>
+    <string name="home_subtitle">Teƒe siwo te ɖe ŋuwò wu</string>
+    <string name="stations_found">Woke %d teƒe</string>
+    <string name="sorted_by_distance">Woɖo wo ɖe didime nu</string>
+
+    <!-- Filter Screen -->
+    <string name="filter_title">Di</string>
+    <string name="filter_subtitle">Di wò petrol teƒe</string>
+    <string name="search_placeholder">Teƒea ƒe ŋkɔ alo aƒedede…</string>
+    <string name="search_results_for">Nusi woke na "%s"</string>
+    <string name="no_results_found">Womeke naneke o</string>
+    <string name="no_results_subtitle">Womeke teƒe aɖeke na "%s" o</string>
+    <string name="show_all_stations">Fia teƒe katã</string>
+    <string name="stations_available">Teƒe %d li</string>
+    <string name="out_of_total">le %d katã me</string>
+
+    <!-- Favorites Screen -->
+    <string name="favorites_title">Lɔlɔ̃tɔwo</string>
+    <string name="favorites_subtitle">Teƒe siwo nèlɔ̃na</string>
+    <string name="favorite_stations">Teƒe %d siwo nèlɔ̃na</string>
+    <string name="clear_favorites">Tutu</string>
+    <string name="clear_favorites_title">Tutu lɔlɔ̃tɔwo</string>
+    <string name="clear_favorites_message">Èka ɖe edzi be yedi be yeatutu teƒe siwo katã nèlɔ̃na a? Màgate ŋu atrɔ gbɔ o.</string>
+    <string name="no_favorites_title">Lɔlɔ̃tɔ aɖeke meli o</string>
+    <string name="no_favorites_subtitle">Tsɔ teƒewo kpe ɖe wò lɔlɔ̃tɔwo ŋu to ɣletivi ⭐ ŋu dede me</string>
+    <string name="loading_favorites">Wole lɔlɔ̃tɔwo ƒe agbale xɔm…</string>
+
+    <!-- History Screen -->
+    <string name="history_title">Ŋutinya</string>
+    <string name="history_subtitle">Teƒe siwo nèkpɔ va yi</string>
+    <string name="visited_stations">Èkpɔ teƒe %d</string>
+    <string name="most_recent_first">Yeyetɔ gbã</string>
+    <string name="clear_history">Tutu</string>
+    <string name="clear_history_title">Tutu ŋutinya</string>
+    <string name="clear_history_message">Èka ɖe edzi be yedi be yeatutu teƒe siwo katã nèkpɔ a? Màgate ŋu atrɔ gbɔ o.</string>
+    <string name="no_visited_stations_title">Mèkpɔ teƒe aɖeke o</string>
+    <string name="no_visited_stations_subtitle">Teƒe siwo nèkpɔna la ado afi sia</string>
+
+    <!-- Station Details -->
+    <string name="station_details_title">Teƒea ƒe nya</string>
+    <string name="station_address_label">Aƒedede</string>
+    <string name="station_distance_label">Didime</string>
+    <string name="station_coordinates">GPS ƒe akɔntabubu</string>
+    <string name="station_latitude">Latitude: %.6f</string>
+    <string name="station_longitude">Longitude: %.6f</string>
+    <string name="go_to_location">Yi teƒe sia</string>
+    <string name="directions">Mɔfiame</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">Tɔtrɔwo</string>
+    <string name="settings_subtitle">Trɔ wò kpɔɖeŋu</string>
+    <string name="language_section">Gbe</string>
+    <string name="language_title">Dɔwɔnu sia ƒe gbe</string>
+    <string name="language_subtitle">Tia gbe si nèdina</string>
+    <string name="select_language">Tia gbe</string>
+    <string name="language_french">Fransegbe</string>
+    <string name="language_english">Eŋlisigbe</string>
+    <string name="language_ewe">Eʋegbe</string>
+    <string name="language_changed">Wotrɔ gbe la nyuie</string>
+    <string name="restart_required">Gaɖe dɔwɔnu la gɔme be tɔtrɔ la nava eme</string>
+
+    <!-- Loading States -->
+    <string name="loading_stations">Wole teƒewo xɔm…</string>
+    <string name="loading_location">Wole wò nɔƒe kple teƒewo dim…</string>
+    <string name="loading_details">Wole nyawo xɔm…</string>
+    <string name="loading_history">Wole ŋutinya xɔm…</string>
+
+    <!-- Error States -->
+    <string name="error_title">Ao!</string>
+    <string name="error_connection">Kadodo ƒe kuxia</string>
+    <string name="error_loading_stations">Kuxi le teƒewo xɔxɔ me</string>
+    <string name="error_loading_details">Kuxi le nyawo xɔxɔ me</string>
+    <string name="error_station_not_found">Womeke teƒe la o</string>
+    <string name="error_no_navigation_app">Mɔfiame dɔwɔnu aɖeke meli o</string>
+    <string name="error_navigation_failed">Kuxi le mɔfiame ƒe ʋuʋu me</string>
+    <string name="check_connection">Kpɔ wò internet kadodo</string>
+    <string name="retry">Te kpɔ ake</string>
+
+    <!-- Empty States -->
+    <string name="no_stations_title">Womeke teƒe aɖeke o</string>
+    <string name="no_stations_subtitle">Kpɔ wò internet kadodo</string>
+    <string name="no_stations_available_title">Teƒe aɖeke meli o</string>
+    <string name="no_stations_available_subtitle">Kpɔ wò internet kadodo</string>
+
+    <!-- Permissions -->
+    <string name="permission_required_title">Wohiã mɔɖeɖe</string>
+    <string name="permission_location_message">Wohiã nɔƒe ƒe mɔɖeɖe be woake teƒe siwo te ɖe ŋuwò wu. Èdi be yeana mɔɖeɖe le tɔtrɔwo me a?</string>
+    <string name="yes">Ɛ</string>
+    <string name="no">Aõ</string>
+
+    <!-- Favorite button -->
+    <string name="add_to_favorites">Tsɔ kpe ɖe lɔlɔ̃tɔwo ŋu</string>
+    <string name="remove_from_favorites">Ɖe le lɔlɔ̃tɔwo me</string>
+    <string name="toggle_favorite">Trɔ lɔlɔ̃tɔ</string>
+
+    <!-- Misc -->
+    <string name="km_unit">km</string>
+    <string name="distance_format">%.2f km</string>
+    <string name="back">Megbe</string>
+    <string name="search">Di</string>
+    <string name="clear">Tutu</string>
+    <string name="confirm">Lɔ̃ ɖe edzi</string>
+    <string name="cancel">Gbe</string>
+    <string name="close">Tu</string>
+    <string name="save">Dzra ɖo</string>
+
+    <!-- Accessibility -->
+    <string name="station_image_content_description">%s ƒe nɔnɔmetata</string>
+    <string name="search_icon_content_description">Di</string>
+    <string name="clear_search_content_description">Tutu didi</string>
+    <string name="back_button_content_description">Megbe</string>
+    <string name="location_icon_content_description">Nɔƒe</string>
+    <string name="directions_icon_content_description">Mɔfiame</string>
+    <string name="delete_icon_content_description">Tutu</string>
+    <string name="settings_icon_content_description">Tɔtrɔwo</string>
+</resources>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Essence Togo</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_filter">Filter</string>
+    <string name="nav_favorites">Favorites</string>
+    <string name="nav_history">History</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Home Screen -->
+    <string name="home_title">EssenceTogo</string>
+    <string name="home_subtitle">Nearest stations</string>
+    <string name="stations_found">%d station(s) found</string>
+    <string name="sorted_by_distance">Sorted by distance</string>
+
+    <!-- Filter Screen -->
+    <string name="filter_title">Search</string>
+    <string name="filter_subtitle">Find your gas station</string>
+    <string name="search_placeholder">Station name or address…</string>
+    <string name="search_results_for">Results for "%s"</string>
+    <string name="no_results_found">No results found</string>
+    <string name="no_results_subtitle">No station found for "%s"</string>
+    <string name="show_all_stations">Show all stations</string>
+    <string name="stations_available">%d station(s) available</string>
+    <string name="out_of_total">out of %d total</string>
+
+    <!-- Favorites Screen -->
+    <string name="favorites_title">Favorites</string>
+    <string name="favorites_subtitle">Your favorite stations</string>
+    <string name="favorite_stations">%d favorite station(s)</string>
+    <string name="clear_favorites">Clear</string>
+    <string name="clear_favorites_title">Clear favorites</string>
+    <string name="clear_favorites_message">Are you sure you want to delete all favorite stations? This action cannot be undone.</string>
+    <string name="no_favorites_title">No favorites</string>
+    <string name="no_favorites_subtitle">Add stations to your favorites by tapping the star ⭐</string>
+    <string name="loading_favorites">Loading favorites…</string>
+
+    <!-- History Screen -->
+    <string name="history_title">History</string>
+    <string name="history_subtitle">Recently visited</string>
+    <string name="visited_stations">%d visited station(s)</string>
+    <string name="most_recent_first">Most recent first</string>
+    <string name="clear_history">Clear</string>
+    <string name="clear_history_title">Clear history</string>
+    <string name="clear_history_message">Are you sure you want to delete all visited stations? This action cannot be undone.</string>
+    <string name="no_visited_stations_title">No visited stations</string>
+    <string name="no_visited_stations_subtitle">Stations you view will appear here</string>
+
+    <!-- Station Details -->
+    <string name="station_details_title">Station details</string>
+    <string name="station_address_label">Address</string>
+    <string name="station_distance_label">Distance</string>
+    <string name="station_coordinates">GPS Coordinates</string>
+    <string name="station_latitude">Latitude: %.6f</string>
+    <string name="station_longitude">Longitude: %.6f</string>
+    <string name="go_to_location">Go to this location</string>
+    <string name="directions">Directions</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_subtitle">Customize your experience</string>
+    <string name="language_section">Language</string>
+    <string name="language_title">App language</string>
+    <string name="language_subtitle">Choose your preferred language</string>
+    <string name="select_language">Select language</string>
+    <string name="language_french">Français</string>
+    <string name="language_english">English</string>
+    <string name="language_ewe">Eʋegbe</string>
+    <string name="language_changed">Language changed successfully</string>
+    <string name="restart_required">Restart the app to apply changes</string>
+
+    <!-- Loading States -->
+    <string name="loading_stations">Loading stations…</string>
+    <string name="loading_location">Getting your location and stations…</string>
+    <string name="loading_details">Loading details…</string>
+    <string name="loading_history">Loading history…</string>
+
+    <!-- Error States -->
+    <string name="error_title">Oops!</string>
+    <string name="error_connection">Connection error</string>
+    <string name="error_loading_stations">Error loading stations</string>
+    <string name="error_loading_details">Error loading details</string>
+    <string name="error_station_not_found">Station not found</string>
+    <string name="error_no_navigation_app">No navigation app available</string>
+    <string name="error_navigation_failed">Error opening navigation</string>
+    <string name="check_connection">Check your internet connection</string>
+    <string name="retry">Retry</string>
+
+    <!-- Empty States -->
+    <string name="no_stations_title">No stations found</string>
+    <string name="no_stations_subtitle">Check your internet connection</string>
+    <string name="no_stations_available_title">No stations available</string>
+    <string name="no_stations_available_subtitle">Check your internet connection</string>
+
+    <!-- Permissions -->
+    <string name="permission_required_title">Permission required</string>
+    <string name="permission_location_message">Location permission is required to find the nearest stations. Do you want to enable the permission in settings?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <!-- Favorite button -->
+    <string name="add_to_favorites">Add to favorites</string>
+    <string name="remove_from_favorites">Remove from favorites</string>
+    <string name="toggle_favorite">Toggle favorite</string>
+
+    <!-- Misc -->
+    <string name="km_unit">km</string>
+    <string name="distance_format">%.2f km</string>
+    <string name="back">Back</string>
+    <string name="search">Search</string>
+    <string name="clear">Clear</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="close">Close</string>
+    <string name="save">Save</string>
+
+    <!-- Accessibility -->
+    <string name="station_image_content_description">Image of %s</string>
+    <string name="search_icon_content_description">Search</string>
+    <string name="clear_search_content_description">Clear search</string>
+    <string name="back_button_content_description">Back</string>
+    <string name="location_icon_content_description">Location</string>
+    <string name="directions_icon_content_description">Directions</string>
+    <string name="delete_icon_content_description">Delete</string>
+    <string name="settings_icon_content_description">Settings</string>
+</resources>

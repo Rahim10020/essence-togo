@@ -3,6 +3,7 @@ package com.example.essence_togo
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -25,6 +26,7 @@ import com.example.essence_togo.presentation.ui.navigation.BottomNavDestination
 import com.example.essence_togo.presentation.ui.navigation.NavGraph
 import com.example.essence_togo.presentation.ui.navigation.bottomNavDestinations
 import com.example.essence_togo.presentation.ui.theme.EssenceTogoTheme
+import com.example.essence_togo.utils.LocaleManager
 import com.example.essence_togo.utils.LocationManager
 
 class MainActivity : ComponentActivity() {
@@ -46,6 +48,11 @@ class MainActivity : ComponentActivity() {
                 showPermissionSettingsDialog()
             }
         }
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        // Appliquer la langue sauvegardée avant de créer l'activité
+        super.attachBaseContext(LocaleManager.applySavedLocale(newBase))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,15 +80,15 @@ class MainActivity : ComponentActivity() {
 
     private fun showPermissionSettingsDialog() {
         AlertDialog.Builder(this)
-            .setTitle(R.string.permission_required_title)
-            .setMessage(R.string.permission_location_message)
-            .setPositiveButton(R.string.yes) { _, _ ->
+            .setTitle(getString(R.string.permission_required_title))
+            .setMessage(getString(R.string.permission_location_message))
+            .setPositiveButton(getString(R.string.yes)) { _, _ ->
                 val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
                     data = Uri.fromParts("package", packageName, null)
                 }
                 startActivity(intent)
             }
-            .setNegativeButton(R.string.no, null)
+            .setNegativeButton(getString(R.string.no), null)
             .show()
     }
 }
@@ -110,7 +117,7 @@ fun EssenceTogoApp() {
                                 )
                             },
                             label = {
-                                    Text(text = destination.title)
+                                Text(text = destination.title)
                             },
                             onClick = {
                                 if (currentRoute != destination.route) {
