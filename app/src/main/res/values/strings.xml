@@ -13,7 +13,7 @@
     <string name="sorted_by_distance">Triées par distance</string>
 
     <!-- Filter Screen -->
-    <string name="filter_title">Rechercher</string>
+    <string name="filter_title">Rechercher…</string>
     <string name="filter_subtitle">Trouvez votre station-service</string>
     <string name="search_placeholder">Nom de station ou adresse…</string>
     <string name="search_results_for">Résultats pour "%s"</string>
@@ -76,12 +76,12 @@
     <string name="km_unit">km</string>
     <string name="distance_format">%.2f km</string>
     <string name="back">Retour</string>
-    <string name="search">Rechercher</string>
+    <string name="search">Rechercher…</string>
     <string name="clear">Effacer</string>
 
     <!-- Accessibility -->
     <string name="station_image_content_description">Image de %s</string>
-    <string name="search_icon_content_description">Rechercher</string>
+    <string name="search_icon_content_description">Rechercher…</string>
     <string name="clear_search_content_description">Effacer la recherche</string>
     <string name="back_button_content_description">Retour</string>
     <string name="location_icon_content_description">Localisation</string>

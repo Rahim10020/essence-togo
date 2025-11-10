@@ -23,11 +23,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.essence_togo.R
 import com.example.essence_togo.data.model.Station
 import com.example.essence_togo.presentation.ui.components.CustomSearchBar
 import com.example.essence_togo.presentation.ui.components.EmptyState
@@ -62,7 +64,7 @@ fun FilterScreen(
                     .padding(16.dp)
             ) {
                 Text(
-                    text        = "Rechercher...",
+                    text        = stringResource(id = R.string.filter_title),
                     style       = MaterialTheme.typography.headlineLarge,
                     fontWeight  = FontWeight.Bold,
                     color       = MaterialTheme.colorScheme.primary
@@ -71,7 +73,7 @@ fun FilterScreen(
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text        = "Trouvez votre station-service",
+                    text        = stringResource(id = R.string.filter_subtitle),
                     style       = MaterialTheme.typography.titleMedium,
                     color       = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -82,7 +84,8 @@ fun FilterScreen(
         CustomSearchBar(
             query           = uiState.searchQuery,
             onQueryChange   = viewModel::onSearchQueryChange,
-            placeholder     = "Nom de station ou adresse...",
+            placeholder     = stringResource(id = R.string.search_placeholder),
+            modifier        = Modifier.fillMaxWidth(),
             enabled         = !uiState.isLoading
         )
 
@@ -92,13 +95,13 @@ fun FilterScreen(
                 uiState.isLoading -> {
                     LoadingIndicator(
                         modifier    = Modifier.align(Alignment.Center),
-                        message     = "Chargement des stations..."
+                        message     = stringResource(id = R.string.loading_stations)
                     )
                 }
 
                 uiState.error != null -> {
                     ErrorState(
-                        title       = "Erreur de chargement",
+                        title       = stringResource(id = R.string.error_loading_stations),
                         subtitle    = uiState.error!!,
                         onRetry     = { viewModel.retry() },
                         modifier    = Modifier.align(Alignment.Center)
@@ -115,8 +118,8 @@ fun FilterScreen(
 
                 uiState.filtredStations.isEmpty() -> {
                     EmptyState(
-                        title       = "Aucune station disponible",
-                        subtitle    = "Verifiez votre connexion internet",
+                        title       = stringResource(id = R.string.no_stations_available_title),
+                        subtitle    = stringResource(id = R.string.no_stations_available_subtitle),
                         modifier    = Modifier.align(Alignment.Center)
                     )
                 }
@@ -152,7 +155,7 @@ private fun SearchEmptyState(
     ) {
 
         Text(
-            text        = "Aucun resultat",
+            text        = stringResource(id = R.string.no_results_found),
             style       = MaterialTheme.typography.headlineMedium,
             color       = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign   = TextAlign.Center
@@ -161,7 +164,7 @@ private fun SearchEmptyState(
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text        = "Aucune station trouvee pour \"$query\" ",
+            text        = stringResource(id = R.string.no_results_subtitle, query),
             style       = MaterialTheme.typography.bodyMedium,
             color       = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign   = TextAlign.Center
@@ -176,7 +179,7 @@ private fun SearchEmptyState(
             )
         ) {
             Text(
-                text    = "Voir toutes les stations",
+                text    = stringResource(id = R.string.show_all_stations),
                 color   = MaterialTheme.colorScheme.onPrimaryContainer
             )
         }
@@ -216,7 +219,7 @@ private fun FiltredStationsList(
                 ) {
                     if (searchQuery.isNotBlank()) {
                         Text(
-                            text        = "Resultats pour \"$searchQuery\" ",
+                            text        = stringResource(id = R.string.search_results_for ,searchQuery),
                             style       = MaterialTheme.typography.titleSmall,
                             fontWeight  = FontWeight.Medium,
                             color       = MaterialTheme.colorScheme.onSecondaryContainer
