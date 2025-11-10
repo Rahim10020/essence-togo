@@ -13,17 +13,22 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -41,10 +46,12 @@ import com.example.essence_togo.presentation.ui.components.EmptyState
 import com.example.essence_togo.presentation.ui.components.LoadingIndicator
 import com.example.essence_togo.presentation.ui.components.StationCard
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FavoritesScreen(
     viewModel: FavoritesViewModel,
-    onStationClick: (Int) -> Unit
+    onStationClick: (Int) -> Unit,
+    onSettingsClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var showClearDialog by remember { mutableStateOf(false) }
@@ -54,53 +61,54 @@ fun FavoritesScreen(
             .fillMaxSize()
             .statusBarsPadding()
     ) {
-        // Header avec titre et bouton de suppression
-        Surface(
-            color = MaterialTheme.colorScheme.surface,
-            shadowElevation = 4.dp
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column(modifier = Modifier.weight(1f)) {
+        // TopAppBar avec bouton Settings et bouton Vider
+        TopAppBar(
+            title = {
+                Column {
                     Text(
-                        text = stringResource(id = R.string.favorites_title),
+                        text = stringResource(R.string.favorites_title),
                         style = MaterialTheme.typography.headlineLarge,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
+                        fontWeight = FontWeight.Bold
                     )
-
-                    Spacer(modifier = Modifier.height(4.dp))
-
                     Text(
-                        text = stringResource(id = R.string.favorites_subtitle),
+                        text = stringResource(R.string.favorites_subtitle),
                         style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
-
+            },
+            actions = {
                 // Bouton pour vider les favoris
                 if (uiState.favoriteStations.isNotEmpty()) {
                     FilledTonalButton(
                         onClick = { showClearDialog = true },
                         colors = ButtonDefaults.filledTonalButtonColors(
                             containerColor = MaterialTheme.colorScheme.errorContainer
-                        )
+                        ),
+                        modifier = Modifier.padding(end = 8.dp)
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.Delete,
-                            contentDescription = stringResource(id = R.string.clear_favorites),
+                            contentDescription = stringResource(R.string.clear_favorites),
                             modifier = Modifier.size(18.dp)
                         )
-                        Text(text = stringResource(id = R.string.clear_favorites),)
+                        Text(text = stringResource(R.string.clear_favorites))
                     }
                 }
-            }
-        }
+
+                // Bouton Settings
+                IconButton(onClick = onSettingsClick) {
+                    Icon(
+                        imageVector = Icons.Default.Settings,
+                        contentDescription = stringResource(R.string.settings_icon_content_description),
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
+            },
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = MaterialTheme.colorScheme.surface
+            )
+        )
 
         // Contenu principal
         Box(modifier = Modifier.fillMaxSize()) {
@@ -108,14 +116,14 @@ fun FavoritesScreen(
                 uiState.isLoading -> {
                     LoadingIndicator(
                         modifier = Modifier.align(Alignment.Center),
-                        message = stringResource(id = R.string.loading_favorites),
+                        message = stringResource(R.string.loading_favorites)
                     )
                 }
 
                 uiState.favoriteStations.isEmpty() -> {
                     EmptyState(
-                        title = stringResource(id = R.string.no_favorites_title),
-                        subtitle = stringResource(id = R.string.no_favorites_subtitle),
+                        title = stringResource(R.string.no_favorites_title),
+                        subtitle = stringResource(R.string.no_favorites_subtitle),
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }

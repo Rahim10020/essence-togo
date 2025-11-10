@@ -13,17 +13,21 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,10 +52,12 @@ fun HistoryScreenPreview() {
     // HistoryScreen()
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoryScreen(
     viewModel: HistoryViewModel,
-    onStationClick: (Int) -> Unit
+    onStationClick: (Int) -> Unit,
+    onSettingsClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var showClearDialog by remember { mutableStateOf(false)}
@@ -61,68 +67,69 @@ fun HistoryScreen(
             .fillMaxSize()
             .statusBarsPadding()
     ) {
-        // Header avec titre et bouton de suppression
-        Surface(
-            color = MaterialTheme.colorScheme.surface,
-            shadowElevation = 4.dp
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column(modifier = Modifier.weight(1f)) {
+        // TopAppBar avec bouton Settings et bouton Vider
+        TopAppBar(
+            title = {
+                Column {
                     Text(
-                        text        = stringResource(id = R.string.nav_history),
-                        style       = MaterialTheme.typography.headlineLarge,
-                        fontWeight  = FontWeight.Bold,
-                        color       = MaterialTheme.colorScheme.primary
+                        text = stringResource(R.string.history_title),
+                        style = MaterialTheme.typography.headlineLarge,
+                        fontWeight = FontWeight.Bold
                     )
-
-                    Spacer(modifier = Modifier.height(4.dp))
-
                     Text(
-                        text        = stringResource(id = R.string.history_subtitle),
-                        style       = MaterialTheme.typography.titleMedium,
-                        fontWeight  = FontWeight.Bold,
-                        color       = MaterialTheme.colorScheme.onSurfaceVariant
+                        text = stringResource(R.string.history_subtitle),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
-
+            },
+            actions = {
                 // Bouton pour vider l'historique
                 if (uiState.visitedStations.isNotEmpty()) {
                     FilledTonalButton(
-                        onClick             = { showClearDialog = true },
-                        colors              = ButtonDefaults.filledTonalButtonColors(
-                            containerColor  = MaterialTheme.colorScheme.errorContainer
-                        )
+                        onClick = { showClearDialog = true },
+                        colors = ButtonDefaults.filledTonalButtonColors(
+                            containerColor = MaterialTheme.colorScheme.errorContainer
+                        ),
+                        modifier = Modifier.padding(end = 8.dp)
                     ) {
                         Icon(
-                            imageVector         = Icons.Outlined.Delete,
-                            contentDescription  = stringResource(id = R.string.clear_history),
-                            modifier            = Modifier.size(18.dp)
+                            imageVector = Icons.Outlined.Delete,
+                            contentDescription = stringResource(R.string.clear_history),
+                            modifier = Modifier.size(18.dp)
                         )
-                        Text(text = stringResource(id = R.string.clear_history))
+                        Text(text = stringResource(R.string.clear_history))
                     }
                 }
-            }
-        }
 
-        // contenu principal 
+                // Bouton Settings
+                IconButton (onClick = onSettingsClick) {
+                    Icon(
+                        imageVector = Icons.Default.Settings,
+                        contentDescription = stringResource(R.string.settings_icon_content_description),
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
+            },
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = MaterialTheme.colorScheme.surface
+            )
+        )
+
+        // contenu principal
         Box(modifier = Modifier.fillMaxSize()) {
             when {
                 uiState.isLoading -> {
                     LoadingIndicator(
                         modifier    = Modifier.align(Alignment.Center),
-                        message     = stringResource(id = R.string.loading_history)
+                        message     = stringResource(R.string.loading_history)
                     )
                 }
 
                 uiState.visitedStations.isEmpty() -> {
                     EmptyState(
-                        title       = stringResource(id = R.string.no_visited_stations_title),
-                        subtitle    = stringResource(id = R.string.no_visited_stations_subtitle),
+                        title       = stringResource(R.string.no_visited_stations_title),
+                        subtitle    = stringResource(R.string.no_visited_stations_subtitle),
                         modifier    = Modifier.align(Alignment.Center)
                     )
                 }

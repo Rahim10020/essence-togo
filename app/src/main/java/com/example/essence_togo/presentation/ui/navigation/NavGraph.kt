@@ -49,6 +49,9 @@ fun NavGraph(
                 viewModel       = viewModel,
                 onStationClick  = { stationId ->
                     navController.navigate(Destination.StationDetails.createRoute(stationId))
+                },
+                onSettingsClick = {
+                    navController.navigate(Destination.Settings.route)
                 }
             )
         }
@@ -66,6 +69,9 @@ fun NavGraph(
                 viewModel       = viewModel,
                 onStationClick  = { stationId ->
                     navController.navigate(Destination.StationDetails.createRoute(stationId))
+                },
+                onSettingsClick = {
+                    navController.navigate(Destination.Settings.route)
                 }
             )
         }
@@ -77,10 +83,13 @@ fun NavGraph(
                     preferencesManager = preferencesManager
                 )
             }
-            FavoritesScreen (
+            FavoritesScreen(
                 viewModel = viewModel,
                 onStationClick = { stationId ->
                     navController.navigate(Destination.StationDetails.createRoute(stationId))
+                },
+                onSettingsClick = {
+                    navController.navigate(Destination.Settings.route)
                 }
             )
         }
@@ -96,6 +105,9 @@ fun NavGraph(
                 viewModel = viewModel,
                 onStationClick = {stationId ->
                     navController.navigate(Destination.StationDetails.createRoute(stationId))
+                },
+                onSettingsClick = {
+                    navController.navigate(Destination.Settings.route)
                 }
             )
         }
