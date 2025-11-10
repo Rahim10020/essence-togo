@@ -20,15 +20,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import com.example.essence_togo.R
 import com.example.essence_togo.presentation.ui.theme.SearchBarBackground
 
 @Composable
 fun CustomSearchBar(
     query: String,
     onQueryChange: (String) -> Unit,
-    placeholder: String = "Rechercher une station...",
+    placeholder: String = stringResource(id = R.string.search_placeholder),
     enabled: Boolean = true,
     modifier : Modifier = Modifier
 ) {
@@ -52,7 +54,7 @@ fun CustomSearchBar(
         leadingIcon     = {
             Icon(
                 imageVector = Icons.Default.Search,
-                contentDescription = "Rechercher",
+                contentDescription = stringResource(id = R.string.filter_title),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
         },
@@ -66,7 +68,7 @@ fun CustomSearchBar(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Clear,
-                        contentDescription = "Effacer",
+                        contentDescription = stringResource(id = R.string.clear_search_content_description),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
