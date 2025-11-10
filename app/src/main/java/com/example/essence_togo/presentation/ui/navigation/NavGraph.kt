@@ -20,6 +20,8 @@ import com.example.essence_togo.presentation.ui.screens.history.HistoryScreen
 import com.example.essence_togo.presentation.ui.screens.history.HistoryViewModel
 import com.example.essence_togo.presentation.ui.screens.home.HomeScreen
 import com.example.essence_togo.presentation.ui.screens.home.HomeViewModel
+import com.example.essence_togo.presentation.ui.screens.settings.SettingsScreen
+import com.example.essence_togo.presentation.ui.screens.settings.SettingsViewModel
 import com.example.essence_togo.utils.LocationManager
 
 @Composable
@@ -94,6 +96,19 @@ fun NavGraph(
                 viewModel = viewModel,
                 onStationClick = {stationId ->
                     navController.navigate(Destination.StationDetails.createRoute(stationId))
+                }
+            )
+        }
+
+        // ecran des parametres
+        composable(Destination.Settings.route) {
+            val viewModel: SettingsViewModel = viewModel {
+                SettingsViewModel(context = context)
+            }
+            SettingsScreen(
+                viewModel = viewModel,
+                onBackClick = {
+                    navController.popBackStack()
                 }
             )
         }
