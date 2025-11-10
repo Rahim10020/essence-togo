@@ -20,10 +20,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.essence_togo.R
 import com.example.essence_togo.data.model.Station
 import com.example.essence_togo.presentation.ui.components.EmptyState
 import com.example.essence_togo.presentation.ui.components.ErrorState
@@ -59,14 +61,14 @@ fun HomeScreen(
                     .padding(16.dp)
             ) {
                 Text(
-                    text        = "EssenceTogo",
+                    text        = stringResource(id = R.string.home_title),
                     style       = MaterialTheme.typography.headlineLarge,
                     fontWeight  = FontWeight.Bold,
                     color       = MaterialTheme.colorScheme.primary
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text    = "Stations les plus proches",
+                    text    = stringResource(id = R.string.home_subtitle),
                     style   = MaterialTheme.typography.titleMedium,
                     color   = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -78,12 +80,12 @@ fun HomeScreen(
                 uiState.isLoading -> {
                     LoadingIndicator(
                         modifier    = Modifier.align(Alignment.Center),
-                        message     = "Recuperation de votre position et des stations"
+                        message     = stringResource(id = R.string.loading_location)
                     )
                 }
                 uiState.error != null -> {
                     ErrorState(
-                        title       = "Oops !",
+                        title       = stringResource(id = R.string.error_title),
                         subtitle    = uiState.error!!,
                         onRetry     = {viewModel.retry()},
                         modifier    = Modifier.align(Alignment.Center),
@@ -91,8 +93,8 @@ fun HomeScreen(
                 }
                 uiState.stations.isEmpty() -> {
                     EmptyState(
-                        title       = "Aucune station trouvee",
-                        subtitle    = "Verifiez votre connexion internet",
+                        title       = stringResource(id = R.string.no_stations_title),
+                        subtitle    = stringResource(id = R.string.no_stations_subtitle),
                         modifier    = Modifier.align(Alignment.Center)
                     )
                 }
@@ -143,7 +145,7 @@ private fun StationsList(
                     Spacer(modifier = Modifier.weight(1f))
                     if (stations.isNotEmpty() && stations.first().distance > 0) {
                         Text(
-                            text    = "Triees par distance",
+                            text    = stringResource(id = R.string.sorted_by_distance),
                             style   = MaterialTheme.typography.bodySmall,
                             color   = MaterialTheme.colorScheme.onPrimaryContainer
                         )

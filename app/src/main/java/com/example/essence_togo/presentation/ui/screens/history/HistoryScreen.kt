@@ -31,10 +31,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.essence_togo.R
 import com.example.essence_togo.data.model.Station
 import com.example.essence_togo.presentation.ui.components.EmptyState
 import com.example.essence_togo.presentation.ui.components.LoadingIndicator
@@ -72,7 +74,7 @@ fun HistoryScreen(
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text        = "Historique",
+                        text        = stringResource(id = R.string.nav_history),
                         style       = MaterialTheme.typography.headlineLarge,
                         fontWeight  = FontWeight.Bold,
                         color       = MaterialTheme.colorScheme.primary
@@ -81,7 +83,7 @@ fun HistoryScreen(
                     Spacer(modifier = Modifier.height(4.dp))
 
                     Text(
-                        text        = "Recemment visitees",
+                        text        = stringResource(id = R.string.history_subtitle),
                         style       = MaterialTheme.typography.titleMedium,
                         fontWeight  = FontWeight.Bold,
                         color       = MaterialTheme.colorScheme.onSurfaceVariant
@@ -98,10 +100,10 @@ fun HistoryScreen(
                     ) {
                         Icon(
                             imageVector         = Icons.Outlined.Delete,
-                            contentDescription  = "Vider",
+                            contentDescription  = stringResource(id = R.string.clear_history),
                             modifier            = Modifier.size(18.dp)
                         )
-                        Text(text = "Vider")
+                        Text(text = stringResource(id = R.string.clear_history))
                     }
                 }
             }
@@ -113,14 +115,14 @@ fun HistoryScreen(
                 uiState.isLoading -> {
                     LoadingIndicator(
                         modifier    = Modifier.align(Alignment.Center),
-                        message     = "Chargement de l'historique..."
+                        message     = stringResource(id = R.string.loading_history)
                     )
                 }
 
                 uiState.visitedStations.isEmpty() -> {
                     EmptyState(
-                        title       = "Aucune station visitee",
-                        subtitle    = "Les stations que vous consultez apparaitront ici",
+                        title       = stringResource(id = R.string.no_visited_stations_title),
+                        subtitle    = stringResource(id = R.string.no_visited_stations_subtitle),
                         modifier    = Modifier.align(Alignment.Center)
                     )
                 }
@@ -143,12 +145,12 @@ fun HistoryScreen(
         AlertDialog(
             onDismissRequest = { showClearDialog = false },
             title = {
-                Text(text = "Vider l'historique")
+                Text(text = stringResource(id = R.string.clear_history))
             },
             text = {
                 Text(
-                    text = "Etes vous sur de vouloir supprimer toutes les stations visitees ? " +
-                            "Cette action ne peut pas etre annulee"
+                    text = stringResource(id = R.string.clear_history_message),
+                    style = MaterialTheme.typography.bodyMedium
                 )
             },
             confirmButton = {
@@ -158,14 +160,17 @@ fun HistoryScreen(
                         showClearDialog = false
                     }
                 ) {
-                    Text(text = "Confirmer", color = MaterialTheme.colorScheme.error)
+                    Text(
+                        text = stringResource(id = R.string.confirm),
+                        color = MaterialTheme.colorScheme.error
+                    )
                 }
             },
             dismissButton = {
                 TextButton(
                     onClick = { showClearDialog = false }
                 ) {
-                    Text(text = "Annuler")
+                    Text(text = stringResource(id = R.string.cancel))
                 }
             }
         )
@@ -203,7 +208,7 @@ private fun HistoryStationsList(
                     )
                     Spacer(modifier = Modifier.weight(1f))
                     Text(
-                        text    = "Plus recente en premier",
+                        text    = stringResource(id = R.string.most_recent_first),
                         style   = MaterialTheme.typography.bodySmall,
                         color   = MaterialTheme.colorScheme.onTertiaryContainer
                     )
