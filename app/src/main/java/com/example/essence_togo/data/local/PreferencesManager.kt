@@ -14,15 +14,28 @@ class PreferencesManager(context: Context) {
     private val _visitedStations = MutableStateFlow<List<Station>>(emptyList())
     val visitedStations: StateFlow<List<Station>> = _visitedStations.asStateFlow()
 
+    // state flow pour les stations favorites
+    private val _favoriteStations = MutableStateFlow<List<Station>>(emptyList())
+    val favoriteStations: StateFlow<List<Station>> = _favoriteStations.asStateFlow()
+
+    // state flow pour les IDs des stations favorites
+    private val _favoriteStationIds = MutableStateFlow<Set<Int>>(emptySet())
+    val favoriteStationIds: StateFlow<Set<Int>> = _favoriteStationIds.asStateFlow()
+
     companion object {
         private const val PREFS_NAME = "essence_togo_prefs"
         private const val KEY_VISITED_STATIONS = "visited_stations"
+        private const val KEY_FAVORITE_STATIONS = "favorite_stations"
     }
 
     init {
         // charger les stations visitees au demarrage
         loadVisitedStations()
+        // charger les stations favorites au demarrage
+        loadFavoriteStations()
     }
+
+    // ========== GESTION DES STATIONS VISITEES ==========
 
     // ajout d'une station a l'historique des stations visitees
     fun addVisitedStation(station: Station) {
@@ -79,6 +92,94 @@ class PreferencesManager(context: Context) {
                 allStations.find { it.id == id }
             }
             _visitedStations.value  = visitedStationsWithDetails
+        }
+    }
+
+    // ========== GESTION DES STATIONS FAVORITES ==========
+
+    // ajout d'une station aux favoris
+    fun addFavoriteStation(station: Station) {
+        val currentFavorites = _favoriteStations.value.toMutableList()
+        val currentIds = _favoriteStationIds.value.toMutableSet()
+
+        // eviter les doublons
+        if (!currentIds.contains(station.id)) {
+            currentFavorites.add(station)
+            currentIds.add(station.id)
+
+            _favoriteStations.value = currentFavorites
+            _favoriteStationIds.value = currentIds
+            saveFavoriteStations(currentIds)
+        }
+    }
+
+    // suppression d'une station des favoris
+    fun removeFavoriteStation(stationId: Int) {
+        val currentFavorites = _favoriteStations.value.toMutableList()
+        val currentIds = _favoriteStationIds.value.toMutableSet()
+
+        currentFavorites.removeAll { it.id == stationId }
+        currentIds.remove(stationId)
+
+        _favoriteStations.value = currentFavorites
+        _favoriteStationIds.value = currentIds
+        saveFavoriteStations(currentIds)
+    }
+
+    // basculer le statut favori d'une station
+    fun toggleFavoriteStation(station: Station) {
+        if (_favoriteStationIds.value.contains(station.id)) {
+            removeFavoriteStation(station.id)
+        } else {
+            addFavoriteStation(station)
+        }
+    }
+
+    // verifier si une station est favorite
+    fun isStationFavorite(stationId: Int): Boolean {
+        return _favoriteStationIds.value.contains(stationId)
+    }
+
+    // suppression de toutes les stations favorites
+    fun clearFavoriteStations() {
+        _favoriteStations.value = emptyList()
+        _favoriteStationIds.value = emptySet()
+        prefs.edit().remove(KEY_FAVORITE_STATIONS).apply()
+    }
+
+    // sauvegarde des stations favorites dans sharedPreferences
+    private fun saveFavoriteStations(stationIds: Set<Int>) {
+        val idsString = stationIds.joinToString(",")
+        prefs.edit().putString(KEY_FAVORITE_STATIONS, idsString).apply()
+    }
+
+    // chargement des stations favorites depuis sharedPreferences
+    private fun loadFavoriteStations() {
+        val stationIdsString = prefs.getString(KEY_FAVORITE_STATIONS, "") ?: ""
+        if (stationIdsString.isNotEmpty()) {
+            val stationIds = stationIdsString.split(",").mapNotNull { it.toIntOrNull() }.toSet()
+            _favoriteStationIds.value = stationIds
+            // Les détails complets seront récupérés via updateFavoriteStationsWithDetails()
+        }
+    }
+
+    // mise a jour de la liste des stations favorites avec les details complets
+    // a appeler quand on a recupere les details depuis firebase
+    fun updateFavoriteStationsWithDetails(allStations: List<Station>) {
+        val favoriteIds = _favoriteStationIds.value
+        if (favoriteIds.isNotEmpty()) {
+            val favoriteStationsWithDetails = allStations.filter { station ->
+                favoriteIds.contains(station.id)
+            }.map { it.copy(isFavorite = true) }
+            _favoriteStations.value = favoriteStationsWithDetails
+        }
+    }
+
+    // mettre à jour le statut favori de toutes les stations
+    fun updateStationsWithFavoriteStatus(stations: List<Station>): List<Station> {
+        val favoriteIds = _favoriteStationIds.value
+        return stations.map { station ->
+            station.copy(isFavorite = favoriteIds.contains(station.id))
         }
     }
 }

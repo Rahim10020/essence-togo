@@ -14,10 +14,11 @@ data class Station(
     val address: String         = "",
     val latitude: Double        = 0.0,
     val longitude: Double       = 0.0,
-    var distance: Double        = 0.0
+    var distance: Double        = 0.0,
+    var isFavorite: Boolean     = false
 ){
     // constructeur sans parametre pour firebase.
-    constructor() : this(0,"","", emptyList(),"",0.0,0.0,0.0)
+    constructor() : this(0,"","", emptyList(),"",0.0,0.0,0.0, false)
 
     fun getAllImages(): List<String> {
         val allImages = mutableListOf<String>()
