@@ -45,6 +45,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -82,7 +83,7 @@ fun StationDetailScreen(
         TopAppBar(
             title = {
                 Text(
-                    text        = uiState.station?.nom ?: "Details de la station",
+                    text        = uiState.station?.nom ?: stringResource(id = R.string.station_details_title),
                     style       = MaterialTheme.typography.titleLarge,
                     fontWeight  = FontWeight.Bold
                 )
@@ -91,7 +92,7 @@ fun StationDetailScreen(
                 IconButton(onClick = onBackClick) {
                     Icon(
                         imageVector         = Icons.Default.ArrowBackIosNew,
-                        contentDescription  = "Retour"
+                        contentDescription  = stringResource(id = R.string.back_button_content_description)
                     )
                 }
             },
@@ -107,13 +108,13 @@ fun StationDetailScreen(
                 uiState.isLoading -> {
                     LoadingIndicator(
                         modifier    = Modifier.align(Alignment.Center),
-                        message     = "Chargement des details..."
+                        message     = stringResource(id = R.string.loading_details)
                     )
                 }
 
                 uiState.error != null -> {
                     ErrorState(
-                        title       = "Erreur",
+                        title       = stringResource(id = R.string.error_title),
                         subtitle    = uiState.error!!,
                         onRetry     = {viewModel.retry()},
                         modifier    = Modifier.align(Alignment.Center)
@@ -158,7 +159,7 @@ fun StationDetailsContent(
                     .placeholder(R.drawable.ic_launcher_background)
                     .error(R.drawable.ic_launcher_background)
                     .build(),
-                contentDescription = "Image de ${station.nom}",
+                contentDescription = stringResource(id = R.string.station_image_content_description, station.nom),
                 modifier = Modifier
                     .fillMaxSize()
                     .clip(RoundedCornerShape(16.dp)),
@@ -198,7 +199,7 @@ fun StationDetailsContent(
                 // Adresse
                 DetailRow(
                     icon        = Icons.Default.LocationOn,
-                    label       = "Adresse",
+                    label       = stringResource(id = R.string.station_address_label),
                     value       = station.address,
                     valueColor  = AddressColor
                 )
@@ -207,7 +208,7 @@ fun StationDetailsContent(
                 if (station.distance > 0) {
                     DetailRow(
                         icon        = Icons.Default.Directions,
-                        label       = "Distance",
+                        label       = stringResource(id = R.string.station_distance_label),
                         value       = station.getFormattedDistance(),
                         valueColor  = DistanceColor
                     )
@@ -228,19 +229,19 @@ fun StationDetailsContent(
                     .fillMaxWidth()
                     .padding(16.dp)) {
                     Text(
-                        text        = "Coordonnees GPS",
+                        text        = stringResource(id = R.string.station_coordinates),
                         style       = MaterialTheme.typography.titleMedium,
                         fontWeight  = FontWeight.SemiBold,
                         color       = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text    = "Latitude: ${String.format("%.6f", station.latitude)}",
+                        text    = stringResource(id = R.string.station_latitude, station.latitude),
                         style   = MaterialTheme.typography.bodySmall,
                         color   = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Text(
-                        text    = "Longitude: ${String.format("%.6f", station.longitude)}",
+                        text    = stringResource(id = R.string.station_longitude, station.longitude),
                         style   = MaterialTheme.typography.bodySmall,
                         color   = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -261,12 +262,12 @@ fun StationDetailsContent(
         ) {
             Icon(
                 imageVector         = Icons.Default.Directions,
-                contentDescription  = "Directions",
+                contentDescription  = stringResource(id = R.string.directions_icon_content_description),
                 modifier            = Modifier.size(24.dp)
             )
             Spacer(modifier = Modifier.width(12.dp))
             Text(
-                text        = "Aller a cet endroit",
+                text        = stringResource(id = R.string.go_to_location),
                 style       = MaterialTheme.typography.titleMedium,
                 fontWeight  = FontWeight.SemiBold
             )
