@@ -4,6 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.ui.graphics.vector.ImageVector
 
 // Destinations principales de l'application (Bottom Navigation)
@@ -14,7 +15,7 @@ sealed class BottomNavDestination(
 ) {
     data object Home: BottomNavDestination(
         route   = "home",
-        title   = "Acceuil",
+        title   = "Accueil",
         icon    = Icons.Default.Home
     )
 
@@ -22,6 +23,12 @@ sealed class BottomNavDestination(
         route   = "filter",
         title   = "Filtrer",
         icon    = Icons.Default.FilterList
+    )
+
+    data object Favorites: BottomNavDestination(
+        route   = "favorites",
+        title   = "Favoris",
+        icon    = Icons.Default.Star
     )
 
     data object History: BottomNavDestination(
@@ -42,6 +49,7 @@ sealed class Destination(val route: String) {
 val bottomNavDestinations = listOf(
     BottomNavDestination.Home,
     BottomNavDestination.Filter,
+    BottomNavDestination.Favorites,
     BottomNavDestination.History
 )
 
