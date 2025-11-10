@@ -31,9 +31,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.essence_togo.R
 import com.example.essence_togo.data.model.Station
 import com.example.essence_togo.presentation.ui.components.EmptyState
 import com.example.essence_togo.presentation.ui.components.LoadingIndicator
@@ -65,7 +67,7 @@ fun FavoritesScreen(
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = "Favoris",
+                        text = stringResource(id = R.string.favorites_title),
                         style = MaterialTheme.typography.headlineLarge,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary
@@ -74,7 +76,7 @@ fun FavoritesScreen(
                     Spacer(modifier = Modifier.height(4.dp))
 
                     Text(
-                        text = "Vos stations préférées",
+                        text = stringResource(id = R.string.favorites_subtitle),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -91,10 +93,10 @@ fun FavoritesScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.Delete,
-                            contentDescription = "Vider",
+                            contentDescription = stringResource(id = R.string.clear_favorites),
                             modifier = Modifier.size(18.dp)
                         )
-                        Text(text = "Vider")
+                        Text(text = stringResource(id = R.string.clear_favorites),)
                     }
                 }
             }
@@ -106,14 +108,14 @@ fun FavoritesScreen(
                 uiState.isLoading -> {
                     LoadingIndicator(
                         modifier = Modifier.align(Alignment.Center),
-                        message = "Chargement des favoris..."
+                        message = stringResource(id = R.string.loading_favorites),
                     )
                 }
 
                 uiState.favoriteStations.isEmpty() -> {
                     EmptyState(
-                        title = "Aucun favori",
-                        subtitle = "Ajoutez des stations à vos favoris en appuyant sur l'étoile ⭐",
+                        title = stringResource(id = R.string.no_favorites_title),
+                        subtitle = stringResource(id = R.string.no_favorites_subtitle),
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
@@ -139,12 +141,11 @@ fun FavoritesScreen(
         AlertDialog(
             onDismissRequest = { showClearDialog = false },
             title = {
-                Text(text = "Vider les favoris")
+                Text(text = stringResource(id = R.string.clear_favorites_title))
             },
             text = {
                 Text(
-                    text = "Êtes-vous sûr de vouloir supprimer toutes les stations favorites ? " +
-                            "Cette action ne peut pas être annulée."
+                    text = stringResource(id = R.string.clear_favorites_message),
                 )
             },
             confirmButton = {
@@ -154,14 +155,14 @@ fun FavoritesScreen(
                         showClearDialog = false
                     }
                 ) {
-                    Text(text = "Confirmer", color = MaterialTheme.colorScheme.error)
+                    Text(text = stringResource(id = R.string.confirm), color = MaterialTheme.colorScheme.error)
                 }
             },
             dismissButton = {
                 TextButton(
                     onClick = { showClearDialog = false }
                 ) {
-                    Text(text = "Annuler")
+                    Text(text = stringResource(id = R.string.cancel))
                 }
             }
         )
