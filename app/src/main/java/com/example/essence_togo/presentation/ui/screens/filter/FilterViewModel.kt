@@ -8,6 +8,7 @@ import com.example.essence_togo.data.local.PreferencesManager
 import com.example.essence_togo.data.model.Station
 import com.example.essence_togo.data.repository.StationRepository
 import com.example.essence_togo.utils.LocationManager
+import com.example.essence_togo.utils.NetworkManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,8 +26,9 @@ data class FilterUiState(
 
 class FilterViewModel(
     private val stationRepository: StationRepository,
-    private  val locationManager: LocationManager,
-    private val preferencesManager: PreferencesManager
+    private val locationManager: LocationManager,
+    private val preferencesManager: PreferencesManager,
+    private val networkManager: NetworkManager
 ): ViewModel() {
     private val _uiState                    = MutableStateFlow(FilterUiState())
     val uiState : StateFlow<FilterUiState>  = _uiState.asStateFlow()
@@ -42,36 +44,50 @@ class FilterViewModel(
     private fun loadData() {
         viewModelScope.launch {
             try {
-                // recuperer la localisation de l'utilisateur
+                // Recuperer la localisation de l'utilisateur
                 val location    = getUserLocation()
                 _uiState.value  = _uiState.value.copy(userLocation = location)
 
-                // Observer les stations depuis firebase
+                // Observer les stations depuis Firebase
                 stationRepository.getAllStations()
-                    .catch {exception ->
+                    .catch { exception ->
                         Log.e(TAG, "Erreur lors du chargement des stations", exception)
                         _uiState.value  = _uiState.value.copy(
                             isLoading   = false,
                             error       = "Erreur lors du chargement des stations"
                         )
                     }
-                    .collect { stations ->
-                        val processedStations = if (location != null) {
-                            // calculer les distances
-                            stationRepository.calculateDistancesForStations(
-                                stations, location.latitude, location.longitude
-                            )
-                        } else {
-                            stations
-                        }
+                    .collect { result ->
+                        result.fold(
+                            onSuccess = { stations ->
+                                val processedStations = if (location != null) {
+                                    // Calculer les distances
+                                    stationRepository.calculateDistancesForStations(
+                                        stations, location.latitude, location.longitude
+                                    )
+                                } else {
+                                    stations
+                                }
 
-                        _uiState.value = _uiState.value.copy(
-                            allStations     = processedStations,
-                            filtredStations = processedStations,
-                            isLoading       = false,
-                            error           = null
+                                // Mettre à jour le statut favori de toutes les stations
+                                val stationsWithFavorites = preferencesManager.updateStationsWithFavoriteStatus(processedStations)
+
+                                _uiState.value = _uiState.value.copy(
+                                    allStations     = stationsWithFavorites,
+                                    filtredStations = stationsWithFavorites,
+                                    isLoading       = false,
+                                    error           = null
+                                )
+                                Log.d(TAG, "Stations chargees pour le filtrage: ${stationsWithFavorites.size}")
+                            },
+                            onFailure = { exception ->
+                                Log.e(TAG, "Échec du chargement des stations", exception)
+                                _uiState.value = _uiState.value.copy(
+                                    isLoading = false,
+                                    error = exception.message ?: "Erreur inconnue"
+                                )
+                            }
                         )
-                        Log.d(TAG, "Stations chargees pour le filtrage: ${processedStations.size}")
                     }
             } catch (exception: Exception) {
                 Log.e(TAG, "Erreur generale dans loadData", exception)
@@ -116,7 +132,7 @@ class FilterViewModel(
     }
 
     fun onStationClick(station: Station) {
-        // ajouter la station aux stations visitees
+        // Ajouter la station aux stations visitees
         preferencesManager.addVisitedStation(station)
         Log.d(TAG, "Station ajoutee a l'historique: ${station.nom}")
     }

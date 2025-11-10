@@ -67,8 +67,6 @@ fun NavGraph(
                 FilterViewModel(
                     stationRepository   = stationRepository,
                     locationManager     = locationManager,
-                    preferencesManager  = preferencesManager,
-                    networkManager      = networkManager
                 )
             }
             FilterScreen(
