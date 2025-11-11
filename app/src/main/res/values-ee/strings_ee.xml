@@ -128,4 +128,9 @@
     <string name="image_count">Nɔnɔmetata %d</string>
     <string name="offline_mode">Wole internet manɔmee - Nyatakakawo le cache me</string>
     <string name="connection_restored">Wogatrɔ kadodo</string>
+
+    <!-- Error messages for ViewModels -->
+    <string name="error_no_cache">Kadodo meli o eye nyatakaka aɖeke mele cache me o</string>
+    <string name="error_generic_connection">Kadodo ƒe kuxi</string>
+    <string name="error_unknown">Kuxi si womenya o</string>
 </resources>

@@ -43,7 +43,7 @@ class StationDetailsViewModel(
                     error       = null
                 )
 
-                // on observe toutes les stations pour trouver celle avec l'id correrspondant
+                // on observe toutes les stations pour trouver celle avec l'id correspondant
                 stationRepository.getAllStations()
                     .catch { exception ->
                         Log.e(TAG, "Erreur lors du chargement de la station", exception)
@@ -52,25 +52,36 @@ class StationDetailsViewModel(
                             error       = "Erreur lors du chargement des details"
                         )
                     }
-                    .collect { stations ->
-                        // Mettre à jour le statut favori de toutes les stations
-                        val stationsWithFavorites = preferencesManager.updateStationsWithFavoriteStatus(stations)
+                    .collect { result ->  // ✅ result est un Result<List<Station>>
+                        result.fold(
+                            onSuccess = { stations ->  // ✅ stations est List<Station>
+                                // Mettre à jour le statut favori de toutes les stations
+                                val stationsWithFavorites = preferencesManager.updateStationsWithFavoriteStatus(stations)
 
-                        val station = stationsWithFavorites.find { it.id == stationId}
-                        if (station != null) {
-                            _uiState.value = _uiState.value.copy(
-                                station     = station,
-                                isLoading   = false,
-                                error       = null
-                            )
-                            Log.d(TAG, "Station trouvee: ${station.nom}")
-                        } else {
-                            _uiState.value  = _uiState.value.copy(
-                                isLoading   = false,
-                                error       = "Station inrouvable"
-                            )
-                            Log.e(TAG, "Station avec ID $stationId introuvable")
-                        }
+                                val station = stationsWithFavorites.find { it.id == stationId }
+                                if (station != null) {
+                                    _uiState.value = _uiState.value.copy(
+                                        station     = station,
+                                        isLoading   = false,
+                                        error       = null
+                                    )
+                                    Log.d(TAG, "Station trouvée: ${station.nom}")
+                                } else {
+                                    _uiState.value  = _uiState.value.copy(
+                                        isLoading   = false,
+                                        error       = "Station introuvable"  // ✅ Corrigé l'orthographe
+                                    )
+                                    Log.e(TAG, "Station avec ID $stationId introuvable")
+                                }
+                            },
+                            onFailure = { exception ->  // ✅ Gérer les erreurs du Result
+                                Log.e(TAG, "Échec du chargement de la station", exception)
+                                _uiState.value = _uiState.value.copy(
+                                    isLoading = false,
+                                    error = exception.message ?: "Erreur inconnue"
+                                )
+                            }
+                        )
                     }
             } catch (exception: Exception) {
                 Log.e(TAG, "Erreur generale dans loadStationDetails", exception)

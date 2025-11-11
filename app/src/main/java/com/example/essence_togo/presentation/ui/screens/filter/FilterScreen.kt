@@ -111,12 +111,17 @@ fun FilterScreen(
                     )
                 }
 
-                uiState.error != null -> {
+                uiState.errorType?.let { errorType ->
+                    val errorMessage = when (errorType) {
+                        ErrorType.LOADING_STATIONS -> stringResource(R.string.error_loading_stations)
+                        ErrorType.NO_CACHE -> stringResource(R.string.error_no_cache)
+                        ErrorType.CONNECTION -> stringResource(R.string.error_generic_connection)
+                        ErrorType.UNKNOWN -> stringResource(R.string.error_unknown)
+                    }
                     ErrorState(
-                        title       = stringResource(id = R.string.error_loading_stations),
-                        subtitle    = uiState.error!!,
-                        onRetry     = { viewModel.retry() },
-                        modifier    = Modifier.align(Alignment.Center)
+                        title = stringResource(R.string.error_title),
+                        subtitle = errorMessage,
+                        onRetry = { viewModel.retry() }
                     )
                 }
 

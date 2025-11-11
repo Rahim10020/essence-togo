@@ -14,8 +14,8 @@ data class Station(
     val address: String         = "",
     val latitude: Double        = 0.0,
     val longitude: Double       = 0.0,
-    var distance: Double        = 0.0,
-    var isFavorite: Boolean     = false
+    val distance: Double        = 0.0,
+    val isFavorite: Boolean     = false
 ){
     // constructeur sans parametre pour firebase.
     constructor() : this(0,"","", emptyList(),"",0.0,0.0,0.0, false)
@@ -41,7 +41,6 @@ data class Station(
                     sin(longDiff / 2).pow(2.0)
 
         val c               = 2 * atan2(sqrt(a), sqrt(1-a))
-        distance            = earthRadius * c
         return distance
     }
 

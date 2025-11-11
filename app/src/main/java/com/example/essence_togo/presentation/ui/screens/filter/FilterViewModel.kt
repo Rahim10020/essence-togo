@@ -8,19 +8,26 @@ import com.example.essence_togo.data.local.PreferencesManager
 import com.example.essence_togo.data.model.Station
 import com.example.essence_togo.data.repository.StationRepository
 import com.example.essence_togo.utils.LocationManager
-import com.example.essence_togo.utils.NetworkManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
+
+enum class ErrorType {
+    LOADING_STATIONS,
+    NO_CACHE,
+    UNKNOWN,
+    CONNECTION
+}
+
 data class FilterUiState(
     val allStations: List<Station>      = emptyList(),
     val filtredStations: List<Station>  = emptyList(),
     val searchQuery: String             = "",
     val isLoading: Boolean              = true,
-    val error: String?                  = null,
+    val errorType: ErrorType?           = null,
     val userLocation: Location?         = null
 )
 
@@ -53,7 +60,7 @@ class FilterViewModel(
                         Log.e(TAG, "Erreur lors du chargement des stations", exception)
                         _uiState.value  = _uiState.value.copy(
                             isLoading   = false,
-                            error       = "Erreur lors du chargement des stations"
+                            errorType   = ErrorType.LOADING_STATIONS
                         )
                     }
                     .collect { result ->
@@ -75,7 +82,7 @@ class FilterViewModel(
                                     allStations     = stationsWithFavorites,
                                     filtredStations = stationsWithFavorites,
                                     isLoading       = false,
-                                    error           = null
+                                    errorType           = null
                                 )
                                 Log.d(TAG, "Stations chargees pour le filtrage: ${stationsWithFavorites.size}")
                             },
@@ -83,7 +90,7 @@ class FilterViewModel(
                                 Log.e(TAG, "Échec du chargement des stations", exception)
                                 _uiState.value = _uiState.value.copy(
                                     isLoading = false,
-                                    error = exception.message ?: "Erreur inconnue"
+                                    errorType = ErrorType.UNKNOWN
                                 )
                             }
                         )
@@ -92,7 +99,7 @@ class FilterViewModel(
                 Log.e(TAG, "Erreur generale dans loadData", exception)
                 _uiState.value  = _uiState.value.copy(
                     isLoading   = false,
-                    error       = "Erreur de connexion"
+                    errorType   = ErrorType.CONNECTION
                 )
             }
         }
@@ -139,7 +146,7 @@ class FilterViewModel(
     fun retry() {
         _uiState.value = _uiState.value.copy(
             isLoading = true,
-            error = null
+            errorType = null
         )
         loadData()
     }

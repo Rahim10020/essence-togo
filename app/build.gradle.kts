@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace = "com.example.essence_togo"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.essence_togo"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -80,7 +80,7 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:21.3.0")
 
     // Image Loading (Coil pour Compose)
-    implementation("io.coil-kt:coil-compose:2.5.0")
+    implementation("io.coil-kt:coil-compose:2.7.0")
 
     // Material Icons Extended (pour plus d'icônes)
     implementation("androidx.compose.material:material-icons-extended:1.7.8")

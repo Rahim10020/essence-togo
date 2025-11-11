@@ -128,4 +128,9 @@
     <string name="image_count">%d image(s)</string>
     <string name="offline_mode">Offline mode - Cached data</string>
     <string name="connection_restored">Connection restored</string>
+
+    <!-- Error messages for ViewModels -->
+    <string name="error_no_cache">No connection and no cached data</string>
+    <string name="error_generic_connection">Connection error</string>
+    <string name="error_unknown">Unknown error</string>
 </resources>
