@@ -1,7 +1,11 @@
 package com.example.essence_togo.presentation.ui.navigation
 
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -30,6 +34,7 @@ import com.example.essence_togo.utils.NetworkManager
 fun NavGraph(
     navController: NavHostController,
     startDestination: String = BottomNavDestination.Home.route,
+    paddingValues: PaddingValues = PaddingValues(0.dp)
 ){
 
     val context             = LocalContext.current
@@ -39,7 +44,11 @@ fun NavGraph(
     val preferencesManager  = PreferencesManager(context)
     val locationManager     = LocationManager(context)
 
-    NavHost(navController = navController, startDestination = startDestination) {
+    NavHost(
+        navController = navController,
+        startDestination = startDestination,
+        modifier = Modifier.padding(paddingValues)
+    ) {
         // ecran d'acceuil
         composable(BottomNavDestination.Home.route) {
             val viewModel: HomeViewModel = viewModel {

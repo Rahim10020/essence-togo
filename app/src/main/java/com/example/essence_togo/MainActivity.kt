@@ -115,11 +115,11 @@ fun EssenceTogoApp() {
                 NavigationBar {
                     bottomNavDestinations.forEach { destination ->
                         NavigationBarItem(
-                            selected = currentRoute == destination.route,
-                            icon = {
+                            selected    = currentRoute == destination.route,
+                            icon        = {
                                 Icon(
-                                    imageVector = destination.icon,
-                                    contentDescription = destination.title
+                                    imageVector         = destination.icon,
+                                    contentDescription  = destination.title
                                 )
                             },
                             label = {
@@ -130,10 +130,10 @@ fun EssenceTogoApp() {
                                     navController.navigate(destination.route) {
                                         // eviter l'accumulation des destinations dans la pile
                                         popUpTo(navController.graph.startDestinationId) {
-                                            saveState = true
+                                            saveState   = true
                                         }
                                         launchSingleTop = true
-                                        restoreState = true
+                                        restoreState    = true
                                     }
                                 }
                             },
@@ -144,8 +144,9 @@ fun EssenceTogoApp() {
         }
     ) { innerPadding ->
         NavGraph(
-            navController = navController,
-            startDestination = BottomNavDestination.Home.route
+            navController       = navController,
+            startDestination    = BottomNavDestination.Home.route,
+            paddingValues       = innerPadding
         )
     }
 }
