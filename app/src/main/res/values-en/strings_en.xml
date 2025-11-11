@@ -125,4 +125,7 @@
     <string name="directions_icon_content_description">Directions</string>
     <string name="delete_icon_content_description">Delete</string>
     <string name="settings_icon_content_description">Settings</string>
+    <string name="image_count">%d image(s)</string>
+    <string name="offline_mode">Offline mode - Cached data</string>
+    <string name="connection_restored">Connection restored</string>
 </resources>

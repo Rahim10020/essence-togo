@@ -157,27 +157,11 @@ fun StationDetailsContent(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // image de la station
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp),
-            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-            shape     = RoundedCornerShape(16.dp)
-        ) {
-            AsyncImage(
-                model = ImageRequest.Builder(context)
-                    .data(station.imageUrl)
-                    .placeholder(R.drawable.ic_launcher_background)
-                    .error(R.drawable.ic_launcher_background)
-                    .build(),
-                contentDescription = stringResource(id = R.string.station_image_content_description, station.nom),
-                modifier = Modifier
-                    .fillMaxSize()
-                    .clip(RoundedCornerShape(16.dp)),
-                contentScale = ContentScale.Crop
-            )
-        }
+        // Galerie d'images de la station
+        StationImageGallery(
+            images = station.getAllImages(),
+            stationName = station.nom
+        )
 
         // informations principales
         Card(
