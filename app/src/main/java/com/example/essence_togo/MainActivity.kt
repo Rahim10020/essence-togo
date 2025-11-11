@@ -95,7 +95,7 @@ class MainActivity : ComponentActivity() {
     override fun onDestroy() {
         super.onDestroy()
         // Libérer les ressources du LocationManager
-        // Si vous ajoutez des listeners dans LocationManager, les retirer ici
+        locationManager.cleanup()
     }
 }
 
