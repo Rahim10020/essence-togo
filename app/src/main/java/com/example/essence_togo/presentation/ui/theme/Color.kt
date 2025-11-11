@@ -8,6 +8,7 @@ val BlueLight   = Color(0xFF5A9BD4)
 val BlueDark    = Color(0xFF084B7A)
 
 val YellowDoree = Color(0xFFFFC107)
+val Vert        = Color(0xFF4CAF50)
 
 val Red         = Color(0xFFF54107)
 val RedLight    = Color(0xFFF87A52)

@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.essence_togo.R
+import com.example.essence_togo.presentation.ui.theme.Vert
 
 @Composable
 fun OfflineIndicator(
@@ -31,14 +32,14 @@ fun OfflineIndicator(
     modifier: Modifier = Modifier
 ) {
     AnimatedVisibility(
-        visible = isOffline,
-        enter = slideInVertically(initialOffsetY = { -it }),
-        exit = slideOutVertically(targetOffsetY = { -it }),
-        modifier = modifier
+        visible     = isOffline,
+        enter       = slideInVertically(initialOffsetY = { -it }),
+        exit        = slideOutVertically(targetOffsetY = { -it }),
+        modifier    = modifier
     ) {
         Surface(
-            modifier = Modifier.fillMaxWidth(),
-            color = MaterialTheme.colorScheme.errorContainer,
+            modifier        = Modifier.fillMaxWidth(),
+            color           = MaterialTheme.colorScheme.errorContainer,
             shadowElevation = 4.dp
         ) {
             Row(
@@ -48,17 +49,17 @@ fun OfflineIndicator(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    imageVector = Icons.Default.CloudOff,
-                    contentDescription = "Mode hors ligne",
-                    tint = MaterialTheme.colorScheme.onErrorContainer,
-                    modifier = Modifier.size(20.dp)
+                    imageVector         = Icons.Default.CloudOff,
+                    contentDescription  = stringResource(id = R.string.offline_mode),
+                    tint                = MaterialTheme.colorScheme.onErrorContainer,
+                    modifier            = Modifier.size(20.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "Mode hors ligne - Données en cache",
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onErrorContainer
+                    text        = stringResource(id = R.string.offline_mode),
+                    style       = MaterialTheme.typography.bodyMedium,
+                    fontWeight  = FontWeight.Medium,
+                    color       = MaterialTheme.colorScheme.onErrorContainer
                 )
             }
         }
@@ -69,19 +70,19 @@ fun OfflineIndicator(
 fun OnlineIndicator(
     isOnline: Boolean,
     showWhenOnline: Boolean = false,  // Afficher ou non l'indicateur quand online
-    modifier: Modifier = Modifier
+    modifier: Modifier      = Modifier
 ) {
     if (!showWhenOnline && isOnline) return
 
     AnimatedVisibility(
-        visible = isOnline && showWhenOnline,
-        enter = slideInVertically(initialOffsetY = { -it }),
-        exit = slideOutVertically(targetOffsetY = { -it }),
-        modifier = modifier
+        visible     = isOnline && showWhenOnline,
+        enter       = slideInVertically(initialOffsetY = { -it }),
+        exit        = slideOutVertically(targetOffsetY = { -it }),
+        modifier    = modifier
     ) {
         Surface(
-            modifier = Modifier.fillMaxWidth(),
-            color = Color(0xFF4CAF50),  // Vert
+            modifier        = Modifier.fillMaxWidth(),
+            color           = Vert,
             shadowElevation = 2.dp
         ) {
             Row(
@@ -91,17 +92,17 @@ fun OnlineIndicator(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    imageVector = Icons.Default.Wifi,
-                    contentDescription = "Mode en ligne",
-                    tint = Color.White,
-                    modifier = Modifier.size(18.dp)
+                    imageVector         = Icons.Default.Wifi,
+                    contentDescription  = "Mode en ligne",
+                    tint                = Color.White,
+                    modifier            = Modifier.size(18.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "Connexion rétablie",
-                    style = MaterialTheme.typography.bodySmall,
-                    fontWeight = FontWeight.Medium,
-                    color = Color.White
+                    text        = stringResource(id = R.string.connection_restored),
+                    style       = MaterialTheme.typography.bodySmall,
+                    fontWeight  = FontWeight.Medium,
+                    color       = Color.White
                 )
             }
         }
