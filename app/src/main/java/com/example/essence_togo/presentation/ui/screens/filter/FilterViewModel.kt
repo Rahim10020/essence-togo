@@ -28,7 +28,6 @@ class FilterViewModel(
     private val stationRepository: StationRepository,
     private val locationManager: LocationManager,
     private val preferencesManager: PreferencesManager,
-    private val networkManager: NetworkManager
 ): ViewModel() {
     private val _uiState                    = MutableStateFlow(FilterUiState())
     val uiState : StateFlow<FilterUiState>  = _uiState.asStateFlow()

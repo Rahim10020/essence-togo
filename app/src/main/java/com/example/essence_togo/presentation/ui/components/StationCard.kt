@@ -56,16 +56,17 @@ fun StationCard(
             verticalAlignment   = Alignment.CenterVertically
         ) {
             // image de la station
-            AsyncImage(model    = ImageRequest.Builder(LocalContext.current)
-                .data(station.imageUrl)
-                .placeholder(R.drawable.ic_launcher_background)
-                .error(R.drawable.ic_launcher_background)
-                .build(),
-                contentDescription  = stringResource(id = R.string.station_image_content_description, station.nom),
-                modifier            = Modifier
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(station.getAllImages().firstOrNull() ?: R.drawable.ic_launcher_background)
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .error(R.drawable.ic_launcher_background)
+                    .build(),
+                contentDescription = stringResource(id = R.string.station_image_content_description, station.nom),
+                modifier = Modifier
                     .size(80.dp)
                     .clip(RoundedCornerShape(8.dp)),
-                contentScale        = ContentScale.Crop
+                contentScale = ContentScale.Crop
             )
             Spacer(modifier = Modifier.width(16.dp))
 
