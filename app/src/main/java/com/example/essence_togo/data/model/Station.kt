@@ -41,7 +41,7 @@ data class Station(
                     sin(longDiff / 2).pow(2.0)
 
         val c               = 2 * atan2(sqrt(a), sqrt(1-a))
-        return distance
+        return earthRadius * c
     }
 
     // retourner une copie de la station avec la distance calculee
