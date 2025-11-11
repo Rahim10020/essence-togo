@@ -91,6 +91,12 @@ class MainActivity : ComponentActivity() {
             .setNegativeButton(getString(R.string.no), null)
             .show()
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Libérer les ressources du LocationManager
+        // Si vous ajoutez des listeners dans LocationManager, les retirer ici
+    }
 }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")

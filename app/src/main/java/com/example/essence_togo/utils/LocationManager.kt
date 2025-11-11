@@ -67,6 +67,9 @@ class LocationManager(private val context: Context) {
     }
 
     // fonction pour demander une nouvelle localisation en temps reel
+    private var activeCallback: LocationCallback? = null
+
+    // Dans requestNewLocation, stockez le callback
     private fun requestNewLocation(callback: (Location?) -> Unit) {
         if (!hasLocationPermission()) {
             callback(null)
@@ -85,10 +88,12 @@ class LocationManager(private val context: Context) {
             override fun onLocationResult(locationResult: LocationResult) {
                 val location = locationResult.lastLocation
                 Log.d(TAG, "Nouvelle localisation obtenue ${location?.latitude}, ${location?.longitude}")
-                fusedLocationClient.removeLocationUpdates(this)
+                cleanup() // Nettoyage automatique
                 callback(location)
             }
         }
+
+        activeCallback = locationCallback // Stocker pour cleanup
 
         try {
             fusedLocationClient.requestLocationUpdates(
@@ -96,9 +101,18 @@ class LocationManager(private val context: Context) {
                 locationCallback,
                 null
             )
-        }catch (e: SecurityException){
+        } catch (e: SecurityException){
             Log.e(TAG, "Erreur de securite lors de la demande de nouvelle localisation",e)
             callback(null)
+        }
+    }
+
+    // méthode de cleanup
+    fun cleanup() {
+        activeCallback?.let { callback ->
+            fusedLocationClient.removeLocationUpdates(callback)
+            activeCallback = null
+            Log.d(TAG, "LocationManager nettoyé")
         }
     }
 
