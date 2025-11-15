@@ -6,6 +6,8 @@ import android.util.Log
 import com.example.essence_togo.data.model.Station
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class CacheManager(context: Context) {
     private val prefs: SharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -22,7 +24,7 @@ class CacheManager(context: Context) {
     /**
      * Sauvegarde les stations dans le cache
      */
-    fun cacheStations(stations: List<Station>) {
+    suspend fun cacheStations(stations: List<Station>) = withContext(Dispatchers.IO) {
         try {
             val json = gson.toJson(stations)
             prefs.edit()
@@ -38,16 +40,16 @@ class CacheManager(context: Context) {
     /**
      * Récupère les stations depuis le cache
      */
-    fun getCachedStations(): List<Station>? {
+    suspend fun getCachedStations(): List<Station>? = withContext(Dispatchers.IO) {
         try {
-            val json = prefs.getString(KEY_STATIONS, null) ?: return null
+            val json = prefs.getString(KEY_STATIONS, null) ?: return@withContext null
             val type = object : TypeToken<List<Station>>() {}.type
             val stations: List<Station> = gson.fromJson(json, type)
             Log.d(TAG, "Stations récupérées du cache: ${stations.size}")
-            return stations
+            return@withContext stations
         } catch (e: Exception) {
             Log.e(TAG, "Erreur lors de la récupération du cache", e)
-            return null
+            return@withContext null
         }
     }
 
@@ -69,7 +71,7 @@ class CacheManager(context: Context) {
     /**
      * Efface le cache
      */
-    fun clearCache() {
+    suspend fun clearCache() = withContext(Dispatchers.IO) {
         prefs.edit()
             .remove(KEY_STATIONS)
             .remove(KEY_LAST_UPDATE)

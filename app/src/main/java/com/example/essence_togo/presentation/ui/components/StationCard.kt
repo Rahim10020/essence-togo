@@ -1,5 +1,9 @@
 package com.example.essence_togo.presentation.ui.components
 
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -40,7 +44,7 @@ fun StationCard(
 ){
     Card(
         onClick     = onClick,
-        modifier    = Modifier
+        modifier    = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 4.dp),
         elevation   = CardDefaults.cardElevation(defaultElevation = 4.dp),
@@ -61,6 +65,8 @@ fun StationCard(
                     .data(station.getAllImages().firstOrNull() ?: R.drawable.ic_launcher_background)
                     .placeholder(R.drawable.ic_launcher_background)
                     .error(R.drawable.ic_launcher_background)
+                    .crossfade(true)
+                    .size(240, 240) // Optimisation: limiter la taille de l'image chargée
                     .build(),
                 contentDescription = stringResource(id = R.string.station_image_content_description, station.nom),
                 modifier = Modifier

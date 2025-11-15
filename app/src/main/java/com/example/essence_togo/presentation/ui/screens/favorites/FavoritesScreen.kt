@@ -218,7 +218,8 @@ private fun FavoriteStationsList(
         ) { station ->
             StationCard(
                 station = station,
-                onClick = { onStationClick(station) }
+                onClick = { onStationClick(station) },
+                onToggleFavorite = { onToggleFavorite(station) }
             )
         }
 

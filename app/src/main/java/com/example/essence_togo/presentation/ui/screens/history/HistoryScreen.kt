@@ -226,7 +226,7 @@ private fun HistoryStationsList(
         // Liste des stations visitees
         items(
             items   = stations,
-            key     = { station -> "${station.id}_${station.hashCode()}"}
+            key     = { station -> station.id }
         ) {station ->
             StationCard(
                 station = station,

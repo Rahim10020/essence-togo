@@ -13,6 +13,8 @@ import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.withTimeoutOrNull
 import kotlin.coroutines.resume
 
 class LocationManager(private val context: Context) {
@@ -20,6 +22,7 @@ class LocationManager(private val context: Context) {
 
     companion object {
         private const val TAG = "LocationManager"
+        private const val LOCATION_TIMEOUT_MS = 30000L // 30 secondes
     }
 
     // verifions si les permissions de localisation sont accordees
@@ -33,11 +36,18 @@ class LocationManager(private val context: Context) {
 
     // recuperation de la derniere postion connue de l'utilisateur
     // retourne null si pas de permission ou de localisation disponible
-    suspend fun getCurrentLocation(): Location? = suspendCancellableCoroutine { continuation ->
+    suspend fun getCurrentLocation(): Location? = withTimeoutOrNull(LOCATION_TIMEOUT_MS) {
+        suspendCancellableCoroutine { continuation ->
         if (!hasLocationPermission()){
             Log.w(TAG, "Permission de localisation non accordee")
             continuation.resume(null)
             return@suspendCancellableCoroutine
+        }
+
+        // Cleanup on cancellation
+        continuation.invokeOnCancellation {
+            Log.d(TAG, "Coroutine annulée, nettoyage du callback")
+            cleanup()
         }
 
         try {
@@ -45,25 +55,37 @@ class LocationManager(private val context: Context) {
                 .addOnSuccessListener { location: Location? ->
                     if (location != null) {
                         Log.d(TAG, "Localisation obtenue ${location.latitude}, ${location.longitude}")
-                        continuation.resume(location)
+                        if (continuation.isActive) {
+                            continuation.resume(location)
+                        }
                     } else {
                         Log.w(TAG, "Aucune localisation disponible")
                         // re-demander une nouvelle localisation
                         requestNewLocation{ newLocation ->
-                            continuation.resume(newLocation)
-
+                            if (continuation.isActive) {
+                                continuation.resume(newLocation)
+                            }
                         }
                     }
                 }
                 .addOnFailureListener{ exception ->
                     Log.e(TAG, "Erreur lors de la recuperation de la localisation", exception)
-                    continuation.resume(null)
+                    if (continuation.isActive) {
+                        continuation.resume(null)
+                    }
                 }
         } catch (e: SecurityException) {
             Log.e(TAG, "Erreur de securite lors de la recuperation de la localisation", e)
-            continuation.resume(null)
+            if (continuation.isActive) {
+                continuation.resume(null)
+            }
         }
 
+        }
+    } ?: run {
+        Log.w(TAG, "Timeout lors de la récupération de la localisation")
+        cleanup()
+        null
     }
 
     // fonction pour demander une nouvelle localisation en temps reel
