@@ -8,9 +8,13 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.launch
 
 class StationRepository(
     private val cacheManager: CacheManager,
@@ -18,6 +22,7 @@ class StationRepository(
 ) {
     private val database        = FirebaseDatabase.getInstance()
     private val stationsRef     = database.getReference("stations")
+    private val repositoryScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     companion object {
         private const val TAG = "StationRepository"
@@ -34,13 +39,15 @@ class StationRepository(
         if (!isOnline) {
             Log.w(TAG, "Pas de connexion internet, utilisation du cache")
             // Mode offline : utiliser le cache
-            val cachedStations = cacheManager.getCachedStations()
-            if (cachedStations != null && cachedStations.isNotEmpty()) {
-                Log.d(TAG, "Stations chargées depuis le cache: ${cachedStations.size}")
-                trySend(Result.success(cachedStations))
-            } else {
-                Log.e(TAG, "Aucune donnée en cache disponible")
-                trySend(Result.failure(Exception("Pas de connexion et aucune donnée en cache")))
+            repositoryScope.launch {
+                val cachedStations = cacheManager.getCachedStations()
+                if (cachedStations != null && cachedStations.isNotEmpty()) {
+                    Log.d(TAG, "Stations chargées depuis le cache: ${cachedStations.size}")
+                    trySend(Result.success(cachedStations))
+                } else {
+                    Log.e(TAG, "Aucune donnée en cache disponible")
+                    trySend(Result.failure(Exception("Pas de connexion et aucune donnée en cache")))
+                }
             }
             // Ne pas fermer le flow, au cas où la connexion revient
             awaitClose { }
@@ -67,8 +74,10 @@ class StationRepository(
 
                 // Mettre à jour le cache avec les nouvelles données
                 if (stations.isNotEmpty()) {
-                    cacheManager.cacheStations(stations)
-                    Log.d(TAG, "Cache mis à jour avec ${stations.size} stations")
+                    repositoryScope.launch {
+                        cacheManager.cacheStations(stations)
+                        Log.d(TAG, "Cache mis à jour avec ${stations.size} stations")
+                    }
                 }
 
                 trySend(Result.success(stations))
@@ -78,12 +87,14 @@ class StationRepository(
                 Log.e(TAG, "Erreur Firebase : ${error.message}")
 
                 // En cas d'erreur Firebase, essayer d'utiliser le cache
-                val cachedStations = cacheManager.getCachedStations()
-                if (cachedStations != null && cachedStations.isNotEmpty()) {
-                    Log.d(TAG, "Erreur Firebase, utilisation du cache de secours")
-                    trySend(Result.success(cachedStations))
-                } else {
-                    trySend(Result.failure(error.toException()))
+                repositoryScope.launch {
+                    val cachedStations = cacheManager.getCachedStations()
+                    if (cachedStations != null && cachedStations.isNotEmpty()) {
+                        Log.d(TAG, "Erreur Firebase, utilisation du cache de secours")
+                        trySend(Result.success(cachedStations))
+                    } else {
+                        trySend(Result.failure(error.toException()))
+                    }
                 }
             }
         }
@@ -95,7 +106,7 @@ class StationRepository(
     /**
      * Récupère une station par son id (avec cache)
      */
-    fun getStationById(id: Int): Station? {
+    suspend fun getStationById(id: Int): Station? {
         return try {
             // Essayer d'abord le cache
             val cachedStations = cacheManager.getCachedStations()
@@ -145,7 +156,7 @@ class StationRepository(
     /**
      * Efface le cache des stations
      */
-    fun clearCache() {
+    suspend fun clearCache() {
         cacheManager.clearCache()
     }
 }

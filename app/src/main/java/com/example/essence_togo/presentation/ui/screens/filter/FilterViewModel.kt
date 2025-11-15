@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.FlowPreview
 
 
 enum class ErrorType {
@@ -54,6 +55,7 @@ class FilterViewModel(
 
     private fun setupSearchDebounce() {
         viewModelScope.launch {
+            @OptIn(FlowPreview::class)
             _searchQuery
                 .debounce(SEARCH_DEBOUNCE_MS)
                 .collect { query ->
