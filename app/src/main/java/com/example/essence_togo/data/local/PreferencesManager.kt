@@ -2,6 +2,7 @@ package com.example.essence_togo.data.local
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import com.example.essence_togo.data.model.Station
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,6 +24,7 @@ class PreferencesManager(context: Context) {
     val favoriteStationIds: StateFlow<Set<Int>> = _favoriteStationIds.asStateFlow()
 
     companion object {
+        private const val TAG = "PreferencesManager"
         private const val PREFS_NAME = "essence_togo_prefs"
         private const val KEY_VISITED_STATIONS = "visited_stations"
         private const val KEY_FAVORITE_STATIONS = "favorite_stations"
@@ -72,26 +74,37 @@ class PreferencesManager(context: Context) {
 
     // chargement des stations visitees depuis sharedPreferences
     private fun loadVisitedStations() {
-        val stationIdsString = prefs.getString(KEY_VISITED_STATIONS, "") ?: ""
-        if (stationIdsString.isNotEmpty()){
-            val stationIds = stationIdsString.split(",").mapNotNull { it.toIntOrNull() }
-            // Les IDs sont chargés au démarrage
-            // Les détails complets des stations sont récupérés via updateVisitedStationsWithDetails()
-            // qui est appelé automatiquement depuis HomeViewModel après le chargement Firebase
-            // Ce système permet de conserver l'ordre de l'historique même après redémarrage
+        try {
+            val stationIdsString = prefs.getString(KEY_VISITED_STATIONS, "") ?: ""
+            if (stationIdsString.isNotEmpty()){
+                val stationIds = stationIdsString.split(",").mapNotNull { it.toIntOrNull() }
+                // Les IDs sont chargés au démarrage
+                // Les détails complets des stations sont récupérés via updateVisitedStationsWithDetails()
+                // qui est appelé automatiquement depuis HomeViewModel après le chargement Firebase
+                // Ce système permet de conserver l'ordre de l'historique même après redémarrage
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Erreur lors du chargement des stations visitées", e)
+            // En cas d'erreur, réinitialiser les données
+            prefs.edit().remove(KEY_VISITED_STATIONS).apply()
         }
     }
 
     // mise a jour de la liste des stations visitees avec les details
     // a appeler quand on a recupere les details depuis firebase
     fun updateVisitedStationsWithDetails(allStations: List<Station>) {
-        val stationIdsString = prefs.getString(KEY_VISITED_STATIONS, "") ?: ""
-        if (stationIdsString.isNotEmpty()) {
-            val stationIds = stationIdsString.split(",").mapNotNull { it.toIntOrNull() }
-            val visitedStationsWithDetails = stationIds.mapNotNull { id ->
-                allStations.find { it.id == id }
+        try {
+            val stationIdsString = prefs.getString(KEY_VISITED_STATIONS, "") ?: ""
+            if (stationIdsString.isNotEmpty()) {
+                val stationIds = stationIdsString.split(",").mapNotNull { it.toIntOrNull() }
+                val visitedStationsWithDetails = stationIds.mapNotNull { id ->
+                    allStations.find { it.id == id }
+                }
+                _visitedStations.value  = visitedStationsWithDetails
             }
-            _visitedStations.value  = visitedStationsWithDetails
+        } catch (e: Exception) {
+            Log.e(TAG, "Erreur lors de la mise à jour des stations visitées", e)
+            _visitedStations.value = emptyList()
         }
     }
 
@@ -155,23 +168,35 @@ class PreferencesManager(context: Context) {
 
     // chargement des stations favorites depuis sharedPreferences
     private fun loadFavoriteStations() {
-        val stationIdsString = prefs.getString(KEY_FAVORITE_STATIONS, "") ?: ""
-        if (stationIdsString.isNotEmpty()) {
-            val stationIds = stationIdsString.split(",").mapNotNull { it.toIntOrNull() }.toSet()
-            _favoriteStationIds.value = stationIds
-            // Les détails complets seront récupérés via updateFavoriteStationsWithDetails()
+        try {
+            val stationIdsString = prefs.getString(KEY_FAVORITE_STATIONS, "") ?: ""
+            if (stationIdsString.isNotEmpty()) {
+                val stationIds = stationIdsString.split(",").mapNotNull { it.toIntOrNull() }.toSet()
+                _favoriteStationIds.value = stationIds
+                // Les détails complets seront récupérés via updateFavoriteStationsWithDetails()
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Erreur lors du chargement des stations favorites", e)
+            // En cas d'erreur, réinitialiser les données
+            _favoriteStationIds.value = emptySet()
+            prefs.edit().remove(KEY_FAVORITE_STATIONS).apply()
         }
     }
 
     // mise a jour de la liste des stations favorites avec les details complets
     // a appeler quand on a recupere les details depuis firebase
     fun updateFavoriteStationsWithDetails(allStations: List<Station>) {
-        val favoriteIds = _favoriteStationIds.value
-        if (favoriteIds.isNotEmpty()) {
-            val favoriteStationsWithDetails = allStations.filter { station ->
-                favoriteIds.contains(station.id)
-            }.map { it.copy(isFavorite = true) }
-            _favoriteStations.value = favoriteStationsWithDetails
+        try {
+            val favoriteIds = _favoriteStationIds.value
+            if (favoriteIds.isNotEmpty()) {
+                val favoriteStationsWithDetails = allStations.filter { station ->
+                    favoriteIds.contains(station.id)
+                }.map { it.copy(isFavorite = true) }
+                _favoriteStations.value = favoriteStationsWithDetails
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Erreur lors de la mise à jour des stations favorites", e)
+            _favoriteStations.value = emptyList()
         }
     }
 

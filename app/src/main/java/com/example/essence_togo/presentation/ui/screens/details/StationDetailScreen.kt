@@ -247,7 +247,7 @@ fun StationDetailsContent(
 
         // bouton pour ouvrir Google maps
         Button(
-            onClick     = { onpenGoogleMaps(context, station) },
+            onClick     = { openGoogleMaps(context, station) },
             modifier    = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
@@ -328,6 +328,8 @@ private fun StationImageGallery(
                     .data(images[0])
                     .placeholder(R.drawable.ic_launcher_background)
                     .error(R.drawable.ic_launcher_background)
+                    .crossfade(true)
+                    .size(800, 600) // Optimisation: limiter la taille
                     .build(),
                 contentDescription = stringResource(id = R.string.station_image_content_description, stationName),
                 modifier = Modifier
@@ -357,6 +359,8 @@ private fun StationImageGallery(
                                 .data(images[index])
                                 .placeholder(R.drawable.ic_launcher_background)
                                 .error(R.drawable.ic_launcher_background)
+                                .crossfade(true)
+                                .size(800, 600) // Optimisation: limiter la taille
                                 .build(),
                             contentDescription = stringResource(
                                 id = R.string.station_image_content_description,
@@ -382,7 +386,7 @@ private fun StationImageGallery(
     }
 }
 
-private fun onpenGoogleMaps(context: Context, station: Station) {
+private fun openGoogleMaps(context: Context, station: Station) {
     try {
         // creer l'URI pour google maps avec les coordonnees et le nom de la station
         val geoUri      = "geo:${station.latitude},${station.longitude}?q=${station.latitude},${station.longitude}(${station.nom})"

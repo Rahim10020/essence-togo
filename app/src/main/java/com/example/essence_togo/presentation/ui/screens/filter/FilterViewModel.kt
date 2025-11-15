@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 
 
@@ -39,12 +40,26 @@ class FilterViewModel(
     private val _uiState                    = MutableStateFlow(FilterUiState())
     val uiState : StateFlow<FilterUiState>  = _uiState.asStateFlow()
 
+    private val _searchQuery = MutableStateFlow("")
+
     companion object {
         private const val TAG = "FilterViewModel"
+        private const val SEARCH_DEBOUNCE_MS = 300L
     }
 
     init {
         loadData()
+        setupSearchDebounce()
+    }
+
+    private fun setupSearchDebounce() {
+        viewModelScope.launch {
+            _searchQuery
+                .debounce(SEARCH_DEBOUNCE_MS)
+                .collect { query ->
+                    filterStations(query)
+                }
+        }
     }
 
     private fun loadData() {
@@ -121,7 +136,7 @@ class FilterViewModel(
 
     fun onSearchQueryChange(query: String) {
         _uiState.value = _uiState.value.copy(searchQuery = query)
-        filterStations(query)
+        _searchQuery.value = query
     }
 
     private fun filterStations(query: String) {
